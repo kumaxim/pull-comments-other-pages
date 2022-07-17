@@ -1,0 +1,105 @@
+{
+    "name": "kumaxim/b2p-comments",
+    "description": "Allow to display comments from one page to another",
+    "type": "wordpress-plugin",
+    "homepage": "https://github.com/kumaxim/b2p-comments",
+    "license": "GPL-2.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "B2PComments\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Kudryavtsev Maxim",
+            "email": "kumaxim@users.noreply.github.com"
+        }
+    ],
+    "repositories":[
+        {
+            "type":"composer",
+            "url":"https://wpackagist.org",
+            "only": [
+                "wpackagist-plugin/*",
+                "wpackagist-theme/*"
+            ]
+        }
+    ],
+    "require-dev": {
+        "johnpbloch/wordpress": "^5.9",
+        "wpackagist-plugin/fakerpress": "^0.5",
+        "wp-cli/wp-cli-bundle": "^2.6",
+        "wpackagist-plugin/wordpress-importer": "^0.7.0",
+        "squizlabs/php_codesniffer": "^3.7",
+        "wp-coding-standards/wpcs": "^2.3"
+    },
+    "archive": {
+        "name": "b2p-comments-plugin",
+        "exclude": [
+            ".git/",
+            ".github/",
+            "wordpress/",
+            "node_modules/",
+            "tests/",
+            "cypress.config.js",
+            "docker-compose.yml",
+            ".env",
+            ".gitignore",
+            "example.env",
+            "webpack.config.js"
+        ]
+    },
+    "extra": {
+        "wordpress-install-dir": "wordpress/",
+        "installer-paths": {
+            "wordpress/wp-content/plugins/{$name}/": ["type:wordpress-plugin"],
+            "wordpress/wp-content/themes/{$name}/": ["type:wordpress-theme"]
+        }
+    },
+    "scripts": {
+        "env:generate": [
+            "if [ ! -f .env ]; then php -r \"copy('example.env', '.env');\"; fi",
+            "if [ -f .env ]; then sed -i -e '/^[ \\t]*#/d' .env; fi",
+            "if ! grep -q DB_ROOT_PASSWORD .env; then echo DB_ROOT_PASSWORD=$(date +%s | sha256sum | base64 | head -c 32) >> .env; fi",
+            "if ! grep -q DB_PASSWORD .env; then echo DB_PASSWORD=$(expr 5 + $(date +%s) | sha256sum | base64 | head -c 32) >> .env; fi",
+            "if ! grep -q DB_TESTS_ROOT_PASSWORD .env; then echo DB_TESTS_ROOT_PASSWORD=$(expr 50 + $(date +%s) | sha256sum | base64 | head -c 32) >> .env; fi",
+            "if ! grep -q DB_TESTS_PASSWORD .env; then echo DB_TESTS_PASSWORD=$(expr 150 + $(date +%s) | sha256sum | base64 | head -c 32) >> .env; fi",
+            "if ! grep -q WP_ADMIN_PASSWORD .env; then echo WP_ADMIN_PASSWORD=$(date +%s | sha256sum | base64 | head -c 32) >> .env; fi"
+        ],
+        "wp:create-config": [
+            "wp @staging core config --dbhost=$(grep -v '^#' .env | grep DOCKER_DB_IP_ADDRESS | cut -d'=' -f2-) --dbuser=wpuser --dbpass=$(grep -v '^#' .env | grep DB_PASSWORD | cut -d'=' -f2-) --dbprefix=wp0l_"
+        ],
+        "wp:create-tests-config": [
+            "wp @staging core config --dbhost=$(grep -v '^#' .env | grep DOCKER_DB_TESTS_IP_ADDRESS | cut -d'=' -f2-) --dbuser=wptests --dbpass=$(grep -v '^#' .env | grep DB_TESTS_PASSWORD | cut -d'=' -f2-) --dbprefix=wp0ltest_"
+        ],
+        "wp:seed": [
+            "if wp @staging core is-installed; then wp @staging db reset --yes; fi",
+            "wp @staging core install --admin_password=$(grep -v '^#' .env | grep WP_ADMIN_PASSWORD | cut -d'=' -f2-)",
+            "wp @staging plugin activate b2p-comments wordpress-importer",
+            "wp @staging post delete $(wp @staging post list --format=ids)",
+            "wp @staging post delete $(wp @staging post list --post_type=page --format=ids)",
+            "wp @staging import wp-content/plugins/b2p-comments/tests/dummy.xml"
+        ],
+        "build": [
+            "@composer install --prefer-dist"
+        ],
+        "clean": [
+            "@composer install --no-dev --optimize-autoloader",
+            "rm -f .env",
+            "rm -rf assets/",
+            "rm -rf vendor/",
+            "rm -rf node_modules/",
+            "rm -rf wordpress/"
+        ],
+        "lint": [
+            "phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs",
+            "phpcs -v"
+        ]
+    },
+    "config": {
+        "allow-plugins": {
+            "johnpbloch/wordpress-core-installer": true,
+            "composer/installers": true
+        }
+    }
+}

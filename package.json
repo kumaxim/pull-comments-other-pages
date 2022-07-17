@@ -1,0 +1,42 @@
+{
+  "name": "kumaxim-b2p-comments",
+  "version": "1.0.0",
+  "description": "Allow to display comments from one page to another",
+  "main": "assets/b2p-comments.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kumaxim/b2p-comments"
+  },
+  "author": "Kudryavtsev Maxim <kumaxim@users.noreply.github.com>",
+  "license": "GPL-2.0-or-later",
+  "private": false,
+  "dependencies": {
+    "select2": "^4.1.0-rc.0"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.7.1",
+    "cypress": "^10.1.0",
+    "cypress-intellij-reporter": "^0.0.7",
+    "dotenv": "^16.0.1",
+    "eslint": "^8.20.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^2.6.1",
+    "sass": "^1.53.0",
+    "postcss-scss": "^4.0.4",
+    "sass-loader": "^13.0.2",
+    "style-loader": "^3.3.1",
+    "stylelint": "^14.9.1",
+    "stylelint-config-standard": "^26.0.0",
+    "stylelint-webpack-plugin": "^3.3.0",
+    "webpack": "^5.73.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "scripts": {
+    "watch": "webpack watch --progress  --mode development",
+    "build:production": "webpack --progress --mode production",
+    "lint:scripts": "DEBUG=eslint:cli-engine eslint \"resources/**/*.{tsx,ts,js}\"",
+    "lint:styles": "stylelint \"resources/**/*.{css,sass,scss,sss,less}\" --custom-syntax postcss-scss --formatter verbose"
+  }
+}

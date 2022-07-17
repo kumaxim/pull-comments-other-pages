@@ -1,0 +1,17 @@
+.b2p-wrap {
+  & > label {
+    font-weight: bold;
+    margin: 0 0.5em 0.5em 0;
+    display: block;
+  }
+
+  & > span {
+    &.hint {
+      display: block;
+      line-height: 1.5em;
+      font-style: italic;
+      font-size: 0.95em;
+      margin: 0.75em 0;
+    }
+  }
+}

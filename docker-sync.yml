@@ -1,0 +1,13 @@
+version: '2'
+
+syncs:
+  wordpress-sync:
+    sync_strategy: 'unison'
+    src: './wordpress'
+    sync_userid: 33
+  plugin-sync:
+    sync_strategy: 'unison'
+    sync_userid: 33
+    src: '.'
+    sync_args: "-copyonconflict -debug verbose"
+    sync_excludes: ['node_modules', 'wordpress', '.docker-sync', '.idea']

@@ -1,0 +1,27 @@
+@staging:
+  ssh: docker-compose:xfs@wpcli
+  path: /var/www/html
+
+core config:
+  dbname: 'wordpress'
+  force: true
+  skip-check: true
+  extra-php: |
+    define('WP_DEBUG_LOG', true);
+    define('DISABLE_WP_CRON', true);
+    define('WP_SITEURL', 'http://localhost');
+    define('WP_HOME',    'http://localhost');
+
+core install:
+  url: 'localhost'
+  title: 'Sandbox'
+  admin_user: 'wpadmin',
+  admin_email: 'example@localhost.org'
+  skip-email: true
+
+import:
+  authors: 'skip'
+  skip: 'attachment'
+
+apache_modules:
+  - mod_rewrite

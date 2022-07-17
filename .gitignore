@@ -1,0 +1,11 @@
+.env
+*.lock
+*.log
+!yarn.lock
+
+vendor/
+node_modules/
+assets/
+wordpress/
+
+.idea
