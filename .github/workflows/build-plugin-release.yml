@@ -30,7 +30,7 @@ jobs:
       - run: |
           composer run env:generate
           composer run lint:php
-          composer run build:build:production
+          composer run build:production
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
