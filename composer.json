@@ -98,7 +98,7 @@
             "rm -rf node_modules/",
             "rm -rf wordpress/"
         ],
-        "lint": [
+        "lint:php": [
             "phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs",
             "phpcs -v"
         ]

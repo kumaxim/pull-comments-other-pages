@@ -25,7 +25,10 @@ jobs:
         with:
           progress: 'yes'
           php_version: '7.4'
-          command: ['env:generate', 'lint', 'build']
+      - run: |
+          composer run env:generate
+          composer run lint:php
+          composer run build:build:production
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
