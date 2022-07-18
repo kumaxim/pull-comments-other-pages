@@ -38,15 +38,22 @@
         "exclude": [
             ".git/",
             ".github/",
+            ".idea/",
+            ".docker-sync/",
+            "resources/",
+            "tests/",
             "wordpress/",
             "node_modules/",
-            "tests/",
-            "cypress.config.js",
-            "docker-compose.yml",
-            ".env",
-            ".gitignore",
             "example.env",
-            "webpack.config.js"
+            "/*.lock",
+            "!/composer.lock",
+            "/*.json",
+            "!/composer.json",
+            "/*.js",
+            "/*.yml",
+            "/*.xml",
+            "/*.log",
+            "/.*"
         ]
     },
     "extra": {
@@ -80,11 +87,11 @@
             "wp @staging post delete $(wp @staging post list --post_type=page --format=ids)",
             "wp @staging import wp-content/plugins/pull-comments-other-pages/tests/dummy.xml"
         ],
-        "build": [
-            "@composer install --prefer-dist"
+        "build:production": [
+            "@composer install --no-dev --prefer-dist --optimize-autoloader",
+            "@composer archive --format=zip --file=pull-comments-other-pages"
         ],
         "clean": [
-            "@composer install --no-dev --optimize-autoloader",
             "rm -f .env",
             "rm -rf assets/",
             "rm -rf vendor/",
