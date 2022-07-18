@@ -99,7 +99,6 @@
             "rm -rf wordpress/"
         ],
         "lint:php": [
-            "phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs",
             "phpcs -v"
         ]
     },

@@ -2,6 +2,9 @@
 <ruleset name="pull-comments-other-pages">
     <description>Pull Comments From Other Page(s) WordPress Plugin Core Coding Standards</description>
 
+    <!-- Path to WordPress Coding Standards -->
+    <config name="installed_paths" value="vendor/wp-coding-standards/wpcs" />
+
     <!-- Scan these files -->
     <file>src</file>
     <file>pull-comments-other-pages.php</file>
