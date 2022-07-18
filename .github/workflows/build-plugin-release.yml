@@ -28,9 +28,9 @@ jobs:
           progress: 'yes'
           php_version: '7.4'
       - run: |
+          echo "$(id -u) | $(id -g)"
           composer run env:generate
           composer run lint:php
-          rm -rf wordpress/
           composer run build:production
       - name: Publish Release
         uses: softprops/action-gh-release@v1
