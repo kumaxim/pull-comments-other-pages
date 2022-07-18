@@ -16,7 +16,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-        run: |
+      - run: |
           npm rum lint:scripts
           npm run lint:styles
           npm run build:production
