@@ -30,14 +30,18 @@ jobs:
       - name: Composer Script - Generate .env
         uses: php-actions/composer@v6
         with:
+          php_version: '7.4'
           command: run-script env:generate
       - name: Composer Script - Lint PHP Files
         uses: php-actions/composer@v6
         with:
+          php_version: '7.4'
           command: run-script lint:php
       - name: Composer Script - Build Archive
         uses: php-actions/composer@v6
         with:
+          progress: 'yes'
+          php_version: '7.4'
           command: run-script build:production
       - name: Publish Release
         uses: softprops/action-gh-release@v1
