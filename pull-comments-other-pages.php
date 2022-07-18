@@ -1,18 +1,18 @@
 <?php
 
 /**
- * Plugin Name:       Between Pages Comments
- * Plugin URI:        https://github.com/kumaxim/b2p-comments
+ * Plugin Name:       Pull Comments From Other Page(s)
+ * Plugin URI:        https://github.com/kumaxim/pull-comments-other-pages
  * Description:       Allow to display comments from one page to another.
  * Requires at least: 4.9
  * Requires PHP:      7.1
  * Author:            Maxim Kudryavtsev
  * Author URI:        https://k-maxim.ru
  * Version:           1.0.0
- * Text Domain:       b2p-comments
- * Domain Path:       assets/languages
+ * Text Domain:       pull-comments-other-pages
+ * Domain Path:       resources/languages
  *
- * Between Pages Comments is free software: you can redistribute it and/or modify
+ * Pull Comments From Other Page(s) is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 2 of the License, or
  * any later version.
@@ -35,12 +35,12 @@ define( 'B2P_POST_META_KEY', 'b2p_source_object_id' );
 function run_b2p_comments_555790ab17f466dc19563dcf9741509e35201d8f() {
 	require_once __DIR__ . '/vendor/autoload.php';
 
-	$metabox = new \B2PComments\AdminMetaBox();
+	$metabox = new \KUMaxim\PullCommentsOtherPages\AdminMetaBox();
 	add_action( 'add_meta_boxes', array( $metabox, 'add_meta_box' ) );
 	add_action( 'save_post', array( $metabox, 'save' ), 10, 3 );
 	add_action( 'admin_enqueue_scripts', array( $metabox, 'enqueue_scripts' ) );
 
-	$comments_query = new \B2PComments\CommentsQuery();
+	$comments_query = new \KUMaxim\PullCommentsOtherPages\CommentsQuery();
 	add_filter( 'comments_template_query_args', array( $comments_query, 'change_args' ) );
 	add_filter( 'get_comments_number', array( $comments_query, 'total_comments_number' ), 10, 2 );
 }

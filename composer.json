@@ -1,12 +1,12 @@
 {
-    "name": "kumaxim/b2p-comments",
+    "name": "kumaxim/pull-comments-other-pages",
     "description": "Allow to display comments from one page to another",
     "type": "wordpress-plugin",
-    "homepage": "https://github.com/kumaxim/b2p-comments",
+    "homepage": "https://github.com/kumaxim/pull-comments-other-pages",
     "license": "GPL-2.0-or-later",
     "autoload": {
         "psr-4": {
-            "B2PComments\\": "src/"
+            "KUMaxim\\PullCommentsOtherPages\\": "src/"
         }
     },
     "authors": [
@@ -34,7 +34,7 @@
         "wp-coding-standards/wpcs": "^2.3"
     },
     "archive": {
-        "name": "b2p-comments-plugin",
+        "name": "pull-comments-other-pages-plugin",
         "exclude": [
             ".git/",
             ".github/",
@@ -75,10 +75,10 @@
         "wp:seed": [
             "if wp @staging core is-installed; then wp @staging db reset --yes; fi",
             "wp @staging core install --admin_password=$(grep -v '^#' .env | grep WP_ADMIN_PASSWORD | cut -d'=' -f2-)",
-            "wp @staging plugin activate b2p-comments wordpress-importer",
+            "wp @staging plugin activate pull-comments-other-pages wordpress-importer",
             "wp @staging post delete $(wp @staging post list --format=ids)",
             "wp @staging post delete $(wp @staging post list --post_type=page --format=ids)",
-            "wp @staging import wp-content/plugins/b2p-comments/tests/dummy.xml"
+            "wp @staging import wp-content/plugins/pull-comments-other-pages/tests/dummy.xml"
         ],
         "build": [
             "@composer install --prefer-dist"

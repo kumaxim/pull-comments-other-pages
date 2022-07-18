@@ -1,7 +1,7 @@
 <?php
 
 
-namespace B2PComments;
+namespace KUMaxim\PullCommentsOtherPages;
 
 
 class CommentsQuery {

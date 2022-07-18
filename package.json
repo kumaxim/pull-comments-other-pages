@@ -1,11 +1,11 @@
 {
-  "name": "kumaxim-b2p-comments",
+  "name": "kumaxim-pull-comments-other-pages",
   "version": "1.0.0",
   "description": "Allow to display comments from one page to another",
-  "main": "assets/b2p-comments.js",
+  "main": "assets/bundle.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/kumaxim/b2p-comments"
+    "url": "https://github.com/kumaxim/pull-comments-other-pages"
   },
   "author": "Kudryavtsev Maxim <kumaxim@users.noreply.github.com>",
   "license": "GPL-2.0-or-later",

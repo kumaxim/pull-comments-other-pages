@@ -1,14 +1,14 @@
 <?php
 
 
-namespace B2PComments;
+namespace KUMaxim\PullCommentsOtherPages;
 
 
 class AdminMetaBox {
 	public function add_meta_box() {
 		$allowed_screens = get_post_types_by_support( 'comments' );
 		$allowed_screens = array_diff( $allowed_screens, array( 'attachment' ) );
-		add_meta_box( 'b2p-comments', __( 'Comments source', 'b2p-comments' ), array( $this, 'display' ), $allowed_screens, 'normal', 'default', array( $allowed_screens ) );
+		add_meta_box( 'pull-comments-other-pages', __( 'Comments source', 'pull-comments-other-pages' ), array( $this, 'display' ), $allowed_screens, 'normal', 'default', array( $allowed_screens ) );
 	}
 
 	public function display( $wp_post, $args ) {
@@ -51,9 +51,9 @@ class AdminMetaBox {
 
 		echo sprintf(
 			'<div class="b2p-wrap"><label for="b2p-source-comments-page-dropdown">%s: </label>%s<span class="hint">%s</span></div>',
-			__( 'Post(page, cpt)', 'b2p-comments' ),
+			__( 'Post(page, cpt)', 'pull-comments-other-pages' ),
 			$output,
-			__( 'Select source page whose comments will be merge with comments one', 'b2p-comments' )
+			__( 'Select source page whose comments will be merge with comments one', 'pull-comments-other-pages' )
 		);
 
 		wp_nonce_field( 'b2p-save-post-' . $wp_post->ID, 'b2p-save-comments-source' );

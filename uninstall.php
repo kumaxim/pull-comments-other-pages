@@ -2,7 +2,7 @@
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || die( 'Access restricted' );
 
-require_once __DIR__ . '/b2p-comments.php';
+require_once __DIR__ . '/pull-comments-other-pages.php';
 
 global $wpdb;
 $wpdb->query(

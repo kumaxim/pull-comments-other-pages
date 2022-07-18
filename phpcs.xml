@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
-<ruleset name="Roots">
-    <description>WordPress Coding Standards</description>
+<ruleset name="pull-comments-other-pages">
+    <description>Pull Comments From Other Page(s) WordPress Plugin Core Coding Standards</description>
 
     <!-- Scan these files -->
     <file>src</file>
-    <file>b2p-comments.php</file>
+    <file>pull-comments-other-pages.php</file>
     <file>uninstall.php</file>
 
     <!-- Show colors in console -->
@@ -15,7 +15,7 @@
 
     <!-- Use PSR-2 as a base -->
     <rule ref="WordPress-Core">
-        <!-- Exclude some rule for using PSR4 autoload -->
+        <!-- Exclude some rule for using PSR4 autoload via Composer -->
         <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
         <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
     </rule>

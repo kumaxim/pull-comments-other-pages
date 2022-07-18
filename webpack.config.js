@@ -8,7 +8,7 @@ const StylelintPlugin = require('stylelint-webpack-plugin');
 
 
 module.exports = {
-	entry: ['./resources/b2p-main.js', './resources/b2p-styles.scss'],
+	entry: ['./resources/scripts-main.js', './resources/styles-main.scss'],
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'assets'),
