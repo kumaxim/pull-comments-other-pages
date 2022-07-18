@@ -30,6 +30,7 @@ jobs:
       - run: |
           composer run env:generate
           composer run lint:php
+          rm -rf wordpress/
           composer run build:production
       - name: Publish Release
         uses: softprops/action-gh-release@v1
