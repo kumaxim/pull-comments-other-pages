@@ -32,13 +32,13 @@ jobs:
         with:
           command: run-script env:generate
       - name: Composer Script - Lint PHP Files
-          uses: php-actions/composer@v6
-          with:
-            command: run-script lint:php
+        uses: php-actions/composer@v6
+        with:
+          command: run-script lint:php
       - name: Composer Script - Build Archive
-          uses: php-actions/composer@v6
-          with:
-            command: run-script build:production
+        uses: php-actions/composer@v6
+        with:
+          command: run-script build:production
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
