@@ -1,1 +1,1 @@
-# WordPress plugin: Between Pages Comments
+# WordPress plugin: Pull Comments From Other Page(s)

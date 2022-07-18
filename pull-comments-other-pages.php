@@ -30,6 +30,8 @@ defined( 'ABSPATH' ) || die( 'Access restricted' );
 
 define( 'B2P_ASSETS_DIRECTORY_URI', plugin_dir_url( __FILE__ ) . 'assets/' );
 
+define( 'B2P_LANGUAGES_DIRECTORY_PATH', dirname( plugin_basename( __FILE__ ) ) . '/resources/languages' );
+
 define( 'B2P_POST_META_KEY', 'b2p_source_object_id' );
 
 function run_b2p_comments_555790ab17f466dc19563dcf9741509e35201d8f() {
@@ -43,6 +45,9 @@ function run_b2p_comments_555790ab17f466dc19563dcf9741509e35201d8f() {
 	$comments_query = new \KUMaxim\PullCommentsOtherPages\CommentsQuery();
 	add_filter( 'comments_template_query_args', array( $comments_query, 'change_args' ) );
 	add_filter( 'get_comments_number', array( $comments_query, 'total_comments_number' ), 10, 2 );
+
+	$lang_loader = new \KUMaxim\PullCommentsOtherPages\LanguageLoader();
+	add_action( 'plugin_loaded', array( $lang_loader, 'load_text_domain' ) );
 }
 
 run_b2p_comments_555790ab17f466dc19563dcf9741509e35201d8f();
