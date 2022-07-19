@@ -36,8 +36,8 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         volumes:
           - wordpress:/var/www/html
-        depends_on:
-          - mysql
+#        depends_on:
+#          - mysql
 
       wpcli:
         image: wordpress:cli-2.6-php7.4
@@ -48,9 +48,9 @@ jobs:
         volumes:
           - wordpress:/var/www/html
           - ./wp-cli.yml:/var/www/html:nocopy
-        depends_on:
-          - mysql
-          - wordpress
+#        depends_on:
+#          - mysql
+#          - wordpress
 
     steps:
       - name: Check out repository code
