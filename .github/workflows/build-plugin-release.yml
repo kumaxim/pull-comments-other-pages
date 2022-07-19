@@ -9,7 +9,6 @@ on:
 
 jobs:
   build-plugin:
-    needs: setup-enviroment
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
