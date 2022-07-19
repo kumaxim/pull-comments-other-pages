@@ -42,12 +42,6 @@ jobs:
           php_version: '7.4'
           command: update --optimize-autoloader
 
-      - name: Composer Script - Generate .env
-        uses: php-actions/composer@v6
-        with:
-          php_version: '7.4'
-          command: run-script env:generate
-
       - name: Composer Script - Lint PHP Files
         uses: php-actions/composer@v6
         with:
@@ -60,10 +54,37 @@ jobs:
           progress: 'yes'
           php_version: '7.4'
           command: run-script build:production
-#  perform-e2e-tests:
-#    needs: build-plugin
-#    runs-on: ubuntu-latest
-#    steps:
+  setup-enviroment:
+    needs: build-plugin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Composer Script - Generate .env
+        uses: php-actions/composer@v6
+        with:
+          php_version: '7.4'
+          command: run-script env:generate
+
+      - name: Publish Enviroment from .env
+        id: dotenv
+        uses: falti/dotenv-action@v0.2
+        with:
+          log-variables: true
+
+  perform-e2e-tests:
+    needs: build-plugin
+    runs-on: ubuntu-latest
+#    container:
+#      image: mysql:5.7
+#      env:
+#        MYSQL_ROOT_PASSWORD: ${{ steps.dotenv.outputs.DB_ROOT_PASSWORD }}
+#        MYSQL_DATABASE: wordpress
+#        MYSQL_USER: wpuser
+#        MYSQL_PASSWORD: ${{ steps.dotenv.outputs.DB_PASSWORD }}
+    steps:
+      output-env:
+        - run: |
+            echo ${{ steps.dotenv.outputs.DB_ROOT_PASSWORD }}
+            echo ${{ steps.dotenv.outputs.DB_PASSWORD }}
 
 #  publish-gh-release:
 #    needs: perform-e2e-tests
