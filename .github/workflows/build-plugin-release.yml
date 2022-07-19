@@ -41,13 +41,15 @@ jobs:
 
       wpcli:
         image: wordpress:cli-2.6-php7.4
-        name: wpcli-service
         env:
           MYSQL_DATABASE: wordpress
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         volumes:
           - wordpress:/var/www/html
+        options: |
+          --name wpcli-service
+
 #        depends_on:
 #          - mysql
 #          - wordpress
