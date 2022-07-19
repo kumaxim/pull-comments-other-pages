@@ -90,8 +90,8 @@ jobs:
           command: run-script lint:php
 
       - name: Get WordPress version
-          run: |
-            vendor/bin/wp --ssh=docker:xfs@wpcli --path=/var/www/html core version
+        run: |
+          vendor/bin/wp --ssh=docker:xfs@wpcli --path=/var/www/html core version
 
       - name: Composer Script - Build Archive
         uses: php-actions/composer@v6
