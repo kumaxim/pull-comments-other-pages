@@ -47,7 +47,6 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         volumes:
           - wordpress:/var/www/html
-          - ./wp-cli.yml:/var/www/html:nocopy
 #        depends_on:
 #          - mysql
 #          - wordpress
