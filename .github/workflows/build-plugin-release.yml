@@ -27,11 +27,11 @@ jobs:
           MYSQL_DATABASE: wordpress
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
-        options: >-
-          --health-cmd "mysql --user=wpuser --password=${{ secrets.MYSQL_DB_PASSWORD }} --execute \"SHOW DATABASES;\""
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 5
+#        options: >-
+#          --health-cmd "mysql --user=wpuser --password=${{ secrets.MYSQL_DB_PASSWORD }} --execute \"SHOW DATABASES;\""
+#          --health-interval 5s
+#          --health-timeout 5s
+#          --health-retries 5
 
       wordpress:
         image: wordpress:6.0-php7.4-fpm
