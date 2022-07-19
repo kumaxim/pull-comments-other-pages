@@ -27,6 +27,11 @@ jobs:
           MYSQL_DATABASE: wordpress
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
+        options: >-
+          --health-cmd mysql --user wpuser --password=${{ secrets.MYSQL_DB_PASSWORD }} --execute "SHOW DATABASES;"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
 
       wordpress:
         image: wordpress:6.0-php7.4-fpm
@@ -37,6 +42,12 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         volumes:
           - wordpress:/var/www/html
+        options: >-
+          --health-cmd bash -c "[ -f /var/www/html/wp-config.php ]"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
 #        depends_on:
 #          - mysql
 
@@ -59,9 +70,9 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      - name: Get WordPress version
-        run: |
-          docker run --rm --volume wordpress wordpress:cli-2.6-php7.4 --path=/var/www/html core version
+#      - name: Get WordPress version
+#        run: |
+#          docker run --rm --volume wordpress wordpress:cli-2.6-php7.4 --path=/var/www/html core version
 
       - name: Setup NodeJS v16
         uses: actions/setup-node@v3
