@@ -48,7 +48,7 @@ jobs:
         volumes:
           - wordpress:/var/www/html
         options: |
-          --name wpcli-service
+          --name wpcli_service
 
 #        depends_on:
 #          - mysql
@@ -94,7 +94,7 @@ jobs:
 
       - name: Get WordPress version
         run: |
-          vendor/bin/wp --ssh=docker:xfs@wpcli-service --path=/var/www/html core version
+          vendor/bin/wp --ssh=docker:xfs@wpcli_service --path=/var/www/html core version
 
       - name: Composer Script - Build Archive
         uses: php-actions/composer@v6
