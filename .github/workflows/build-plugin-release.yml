@@ -27,10 +27,14 @@ jobs:
           yarn run lint:styles
           yarn run build:production
 
-      - name: Get Composer Cache Directory
+      - name: Setup Composer Cache Key
         id: composer-cache
-        run: |
-          echo "::set-output name=dir::$(composer config cache-files-dir)"
+        uses:
+          php-actions/composer@v6
+        with:
+          php_version: '7.4'
+          command: config cache-files-dir | xargs -I{} echo "::set-output name=dir::$({})"
+
       - uses: actions/cache@v3
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
