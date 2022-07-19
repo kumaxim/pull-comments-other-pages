@@ -1,6 +1,7 @@
 .env
-*.lock
 *.log
+*.lock
+!composer.lock
 !yarn.lock
 
 vendor/
