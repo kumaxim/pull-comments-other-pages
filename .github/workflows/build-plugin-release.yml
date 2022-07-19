@@ -81,8 +81,8 @@ jobs:
 #        MYSQL_USER: wpuser
 #        MYSQL_PASSWORD: ${{ steps.dotenv.outputs.DB_PASSWORD }}
     steps:
-      output-env:
-        - run: |
+      - name: Output .env
+        run: |
             echo ${{ steps.dotenv.outputs.DB_ROOT_PASSWORD }}
             echo ${{ steps.dotenv.outputs.DB_PASSWORD }}
 
