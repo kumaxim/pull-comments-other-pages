@@ -27,47 +27,50 @@ jobs:
           yarn run lint:styles
           yarn run build:production
 
-      - name: Setup Composer Cache Key
-        id: composer-cache
-        uses:
-          php-actions/composer@v6
-        with:
-          php_version: '7.4'
-          command: config cache-files-dir | xargs -I{} echo "::set-output name=dir::$({})"
-          only_args: true
+      - name: AAAAAAAAAAa Check2
+        run: echo "::set-output name=dir::111111111111-AAAAAAAAAAAAAAA"
 
-      - uses: actions/cache@v3
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Install Composer Dependencies
-        uses: php-actions/composer@v6
-        with:
-          progress: 'yes'
-          php_version: '7.4'
-          command: update --optimize-autoloader
-
-      - name: Composer Script - Generate .env
-        uses: php-actions/composer@v6
-        with:
-          php_version: '7.4'
-          command: run-script env:generate
-
-      - name: Composer Script - Lint PHP Files
-        uses: php-actions/composer@v6
-        with:
-          php_version: '7.4'
-          command: run-script lint:php
-
-      - name: Composer Script - Build Archive
-        uses: php-actions/composer@v6
-        with:
-          progress: 'yes'
-          php_version: '7.4'
-          command: run-script build:production
+#      - name: Setup Composer Cache Key
+#        id: composer-cache
+#        uses:
+#          php-actions/composer@v6
+#        with:
+#          php_version: '7.4'
+#          command: config cache-files-dir
+#          only_args: true
+#
+#      - uses: actions/cache@v3
+#        with:
+#          path: ${{ steps.composer-cache.outputs.dir }}
+#          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-composer-
+#
+#      - name: Install Composer Dependencies
+#        uses: php-actions/composer@v6
+#        with:
+#          progress: 'yes'
+#          php_version: '7.4'
+#          command: update --optimize-autoloader
+#
+#      - name: Composer Script - Generate .env
+#        uses: php-actions/composer@v6
+#        with:
+#          php_version: '7.4'
+#          command: run-script env:generate
+#
+#      - name: Composer Script - Lint PHP Files
+#        uses: php-actions/composer@v6
+#        with:
+#          php_version: '7.4'
+#          command: run-script lint:php
+#
+#      - name: Composer Script - Build Archive
+#        uses: php-actions/composer@v6
+#        with:
+#          progress: 'yes'
+#          php_version: '7.4'
+#          command: run-script build:production
 #  perform-e2e-tests:
 #    needs: build-plugin
 #    runs-on: ubuntu-latest
