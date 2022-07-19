@@ -42,7 +42,7 @@ jobs:
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         volumes:
-          - wordpress:/var/www/html
+          - ./wordpress:/var/www/html
         options: >-
           --name wordpress_core
           --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
@@ -58,7 +58,7 @@ jobs:
         uses: docker://wordpress:cli-2.6-php7.4
         with:
 #          args: plugin install wordpress-importer --activate
-          args: core install --admin_password=$(grep -v '^#' .env | grep WP_ADMIN_PASSWORD | cut -d'=' -f2-)
+          args: --path=wordpress core install --admin_password=$(grep -v '^#' .env | grep WP_ADMIN_PASSWORD | cut -d'=' -f2-)
 
 #      - name: Setup NodeJS v16
 #        uses: actions/setup-node@v3
