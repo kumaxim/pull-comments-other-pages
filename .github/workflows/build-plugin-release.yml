@@ -17,7 +17,7 @@ jobs:
 #        ports:
 #          - 80:80
 #        volumes:
-#          - wordpress:/var/www/html:nocopy
+#          - wordpress:/var/www/html:ro
 #
       mysql:
         image: mysql:5.7
@@ -33,7 +33,7 @@ jobs:
           --health-interval 5s
           --health-timeout 5s
           --health-retries 5
-#
+
       wordpress:
         image: wordpress:6.0-php7.4-fpm
         env:
@@ -50,17 +50,6 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-#      wpcli:
-#        image: wordpress:cli-2.6-php7.4
-#        env:
-#          MYSQL_DATABASE: wordpress
-#          MYSQL_USER: wpuser
-#          MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
-#        volumes:
-#          - wordpress:/var/www/html
-#        options: >-
-#          --name wpcli_service
-
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -68,7 +57,8 @@ jobs:
       - name: Install and Seed WordPress
         uses: docker://wordpress:cli-2.6-php7.4
         with:
-          args: ls -l .
+#          args: plugin install wordpress-importer --activate
+          args: core install --admin_password=$(grep -v '^#' .env | grep WP_ADMIN_PASSWORD | cut -d'=' -f2-)
 
 #      - name: Setup NodeJS v16
 #        uses: actions/setup-node@v3
