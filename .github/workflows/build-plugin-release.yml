@@ -89,16 +89,16 @@ jobs:
           php_version: '7.4'
           command: run-script lint:php
 
+      - name: Get WordPress version
+          run: |
+            vendor/bin/wp --ssh=docker:xfs@wpcli --path=/var/www/html core version
+
       - name: Composer Script - Build Archive
         uses: php-actions/composer@v6
         with:
           progress: 'yes'
           php_version: '7.4'
           command: run-script build:production
-
-      - name: Get WordPress version
-        run: |
-          vendor/bin/wp --ssh=docker:xfs@wpcli --path=/var/www/html core version
 
 #  perform-e2e-tests:
 #    needs: build-plugin
