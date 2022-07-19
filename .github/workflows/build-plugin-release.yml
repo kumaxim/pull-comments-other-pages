@@ -50,7 +50,7 @@ jobs:
           - wordpress:/var/www/html
         options: >-
           --name wpcli_service
-          --entrypoint tail -f /dev/null
+          --entrypoint "tail -f /dev/null"
 
 #        depends_on:
 #          - mysql
