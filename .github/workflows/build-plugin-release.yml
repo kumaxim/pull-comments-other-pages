@@ -43,6 +43,7 @@ jobs:
         volumes:
           - wordpress:/var/www/html
         options: >-
+          --name wordpress_core
           --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
           --health-interval 5s
           --health-timeout 5s
@@ -70,9 +71,9 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
-#      - name: Get WordPress version
-#        run: |
-#          docker run --rm --volume wordpress wordpress:cli-2.6-php7.4 --path=/var/www/html core version
+      - name: Get WordPress version
+        run: |
+          docker exec -d wordpress_core cat /var/www/html/wp-config.php
 
       - name: Setup NodeJS v16
         uses: actions/setup-node@v3
