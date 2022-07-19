@@ -11,7 +11,7 @@ jobs:
   build-plugin:
     runs-on: ubuntu-latest
 
-#    services:
+    services:
 #      nginx:
 #        image: nginx:latest
 #        ports:
@@ -19,36 +19,36 @@ jobs:
 #        volumes:
 #          - wordpress:/var/www/html:nocopy
 #
-#      mysql:
-#        image: mysql:5.7
-#        ports:
-#          - 3306:3306
-#        env:
-#          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-#          MYSQL_DATABASE: wordpress
-#          MYSQL_USER: wpuser
-#          MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
-#        options: >-
-#          --health-cmd "mysql --user=wpuser --password=$MYSQL_PASSWORD --execute \"SHOW DATABASES;\""
-#          --health-interval 5s
-#          --health-timeout 5s
-#          --health-retries 5
+      mysql:
+        image: mysql:5.7
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wpuser
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
+        options: >-
+          --health-cmd "mysql --user=wpuser --password=$MYSQL_PASSWORD --execute \"SHOW DATABASES;\""
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
 #
-#      wordpress:
-#        image: wordpress:6.0-php7.4-fpm
-#        env:
-#          WORDPRESS_DB_HOST: mysql
-#          MYSQL_DATABASE: wordpress
-#          MYSQL_USER: wpuser
-#          MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
-#        volumes:
-#          - wordpress:/var/www/html
-#        options: >-
-#          --name wordpress_core
-#          --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
-#          --health-interval 5s
-#          --health-timeout 5s
-#          --health-retries 5
+      wordpress:
+        image: wordpress:6.0-php7.4-fpm
+        env:
+          WORDPRESS_DB_HOST: mysql
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wpuser
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
+        volumes:
+          - wordpress:/var/www/html
+        options: >-
+          --name wordpress_core
+          --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
 
 #      wpcli:
 #        image: wordpress:cli-2.6-php7.4
@@ -68,7 +68,9 @@ jobs:
       - name: Install and Seed WordPress
         uses: docker://wordpress:cli-2.6-php7.4
         with:
-          args: --version
+          volumes:
+            - wordpress:/var/www/html
+          args: core install
 
 #      - name: Setup NodeJS v16
 #        uses: actions/setup-node@v3
