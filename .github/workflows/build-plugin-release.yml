@@ -42,13 +42,12 @@ jobs:
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         volumes:
-          - /home/runner/work/pull-comnents-other-pages/pull-comnents-other-pages/wordpress:/var/www/html
-        options: >-
-          --name wordpress_core
-          --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 5
+          - /home/runner/work/pull-comnents-other-pages/pull-comnents-other-pages/wordpress:/var/www/html:nocopy
+#        options: >-
+#          --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
+#          --health-interval 5s
+#          --health-timeout 5s
+#          --health-retries 5
 
     steps:
       - name: Check out repository code
@@ -88,7 +87,7 @@ jobs:
           php_version: '7.4'
           command: run-script lint:php
 
-      - name: Install and Seed WordPress
+      - name: Install WordPress
         uses: docker://wordpress:cli-2.6-php7.4
         with:
           # args: plugin install wordpress-importer --activate
