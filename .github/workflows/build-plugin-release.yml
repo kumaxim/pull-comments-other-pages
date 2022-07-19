@@ -61,7 +61,7 @@ jobs:
 
       - name: Get WordPress version
         run: |
-          docker run wpcli_service core version
+          docker start wpcli_service core version
 
       - name: Setup NodeJS v16
         uses: actions/setup-node@v3
