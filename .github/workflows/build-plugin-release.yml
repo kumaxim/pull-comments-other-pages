@@ -41,6 +41,7 @@ jobs:
 
       wpcli:
         image: wordpress:cli-2.6-php7.4
+        name: wpcli-service
         env:
           MYSQL_DATABASE: wordpress
           MYSQL_USER: wpuser
@@ -91,7 +92,7 @@ jobs:
 
       - name: Get WordPress version
         run: |
-          vendor/bin/wp --ssh=docker:xfs@wpcli --path=/var/www/html core version
+          vendor/bin/wp --ssh=docker:xfs@wpcli-service --path=/var/www/html core version
 
       - name: Composer Script - Build Archive
         uses: php-actions/composer@v6
