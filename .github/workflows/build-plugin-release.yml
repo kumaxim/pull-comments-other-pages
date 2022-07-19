@@ -10,6 +10,7 @@ on:
 jobs:
   build-plugin:
     runs-on: ubuntu-latest
+#    container: wordpress:cli-2.6-php7.4
 
     services:
       nginx:
@@ -49,6 +50,7 @@ jobs:
           - wordpress:/var/www/html
         options: >-
           --name wpcli_service
+          --entrypoint tail -f /dev/null
 
 #        depends_on:
 #          - mysql
