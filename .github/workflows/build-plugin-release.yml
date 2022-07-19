@@ -5,47 +5,80 @@ on:
   pull_request:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
-  create-build:
+  build-plugin:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: Build Assets
+
+      - name: Setup NodeJS v16
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: npm
-      - run: |
-          npm i --ignore-scripts
-          npm rum lint:scripts
-          npm run lint:styles
-          npm run build:production
+          cache: yarn
+
+      - name: Build Assets
+        run: |
+          yarn install --frozen-lockfile --ignore-scripts
+          yarn run lint:scripts
+          yarn run lint:styles
+          yarn run build:production
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: |
+          echo "::set-output name=dir::$(composer config cache-files-dir)"
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
       - name: Install Composer Dependencies
         uses: php-actions/composer@v6
         with:
           progress: 'yes'
           php_version: '7.4'
+          command: update --optimize-autoloader
+
       - name: Composer Script - Generate .env
         uses: php-actions/composer@v6
         with:
           php_version: '7.4'
           command: run-script env:generate
+
       - name: Composer Script - Lint PHP Files
         uses: php-actions/composer@v6
         with:
           php_version: '7.4'
           command: run-script lint:php
+
       - name: Composer Script - Build Archive
         uses: php-actions/composer@v6
         with:
           progress: 'yes'
           php_version: '7.4'
           command: run-script build:production
-      - name: Publish Release
-        uses: softprops/action-gh-release@v1
-        with:
-          draft: true
-          file: 'pull-comments-other-pages.zip'
+#  perform-e2e-tests:
+#    needs: build-plugin
+#    runs-on: ubuntu-latest
+#    steps:
 
+#  publish-gh-release:
+#    needs: perform-e2e-tests
+#    runs-on: ubuntu-latest
+#      steps:
+#      - name: Publish Release
+#        uses: softprops/action-gh-release@v1
+#        with:
+#          draft: true
+#          file: 'pull-comments-other-pages.zip'
+
+#  upload-in-plugin-directory:
+#    needs: perform-e2e-tests
+#    runs-on: ubuntu-latest
+#      steps:
