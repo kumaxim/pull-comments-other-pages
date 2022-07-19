@@ -14,21 +14,25 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      - name: Setup NodeJS v16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: yarn
-
-      - name: Build Assets
-        run: |
-          yarn install --frozen-lockfile --ignore-scripts
-          yarn run lint:scripts
-          yarn run lint:styles
-          yarn run build:production
+#      - name: Setup NodeJS v16
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: 16
+#          cache: yarn
+#
+#      - name: Build Assets
+#        run: |
+#          yarn install --frozen-lockfile --ignore-scripts
+#          yarn run lint:scripts
+#          yarn run lint:styles
+#          yarn run build:production
 
       - name: AAAAAAAAAAa Check2
+        id: composer-cache
         run: echo "::set-output name=dir::111111111111-AAAAAAAAAAAAAAA"
+
+      - name: Output N2
+        run: echo "${{ steps.composer-cache.outputs.dir }}"
 
 #      - name: Setup Composer Cache Key
 #        id: composer-cache
