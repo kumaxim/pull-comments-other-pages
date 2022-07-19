@@ -47,7 +47,7 @@ jobs:
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         volumes:
           - wordpress:/var/www/html
-        options: |
+        options: >-
           --name wpcli_service
 
 #        depends_on:
