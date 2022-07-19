@@ -42,7 +42,7 @@ jobs:
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         volumes:
-          - ${GITHUB_WORKSPACE}/wordpress:/var/www/html
+          - /home/runner/work/pull-comnents-other-pages/pull-comnents-other-pages/wordpress:/var/www/html
         options: >-
           --name wordpress_core
           --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
