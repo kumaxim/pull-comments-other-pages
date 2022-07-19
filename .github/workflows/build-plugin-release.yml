@@ -33,7 +33,9 @@ jobs:
           php-actions/composer@v6
         with:
           php_version: '7.4'
-          command: config cache-files-dir | xargs -I{} echo "::set-output name=dir::$({})"
+          command: config cache-files-dir |
+          args: xargs -I{} echo "::set-output name=dir::$({})"
+          only_args: true
 
       - uses: actions/cache@v3
         with:
