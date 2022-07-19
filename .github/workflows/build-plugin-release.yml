@@ -73,7 +73,7 @@ jobs:
 
       - name: Get WordPress version
         run: |
-          docker exec -d wordpress_core cat /var/www/html/wp-config.php
+          docker exec wordpress_core cat /var/www/html/wp-config.php
 
       - name: Setup NodeJS v16
         uses: actions/setup-node@v3
