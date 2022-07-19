@@ -40,16 +40,16 @@ jobs:
 #        depends_on:
 #          - mysql
 
-      wpcli:
-        image: wordpress:cli-2.6-php7.4
-        env:
-          MYSQL_DATABASE: wordpress
-          MYSQL_USER: wpuser
-          MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
-        volumes:
-          - wordpress:/var/www/html
-        options: >-
-          --name wpcli_service
+#      wpcli:
+#        image: wordpress:cli-2.6-php7.4
+#        env:
+#          MYSQL_DATABASE: wordpress
+#          MYSQL_USER: wpuser
+#          MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
+#        volumes:
+#          - wordpress:/var/www/html
+#        options: >-
+#          --name wpcli_service
 
 #        depends_on:
 #          - mysql
@@ -61,7 +61,7 @@ jobs:
 
       - name: Get WordPress version
         run: |
-          docker start wpcli_service core version
+          docker run --rm --volume wordpress wordpress:cli-2.6-php7.4 --path=/var/www/html core version
 
       - name: Setup NodeJS v16
         uses: actions/setup-node@v3
