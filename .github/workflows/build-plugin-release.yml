@@ -68,9 +68,7 @@ jobs:
       - name: Install and Seed WordPress
         uses: docker://wordpress:cli-2.6-php7.4
         with:
-          volumes:
-            - wordpress:/var/www/html
-          args: core install
+          args: core install && ls -l .
 
 #      - name: Setup NodeJS v16
 #        uses: actions/setup-node@v3
