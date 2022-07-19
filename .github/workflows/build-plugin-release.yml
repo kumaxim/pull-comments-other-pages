@@ -9,6 +9,7 @@ on:
 
 jobs:
   build-plugin:
+    needs: setup-enviroment
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -54,21 +55,6 @@ jobs:
           progress: 'yes'
           php_version: '7.4'
           command: run-script build:production
-  setup-enviroment:
-    needs: build-plugin
-    runs-on: ubuntu-latest
-    steps:
-      - name: Composer Script - Generate .env
-        uses: php-actions/composer@v6
-        with:
-          php_version: '7.4'
-          command: run-script env:generate
-
-      - name: Publish Enviroment from .env
-        id: dotenv
-        uses: falti/dotenv-action@v0.2
-        with:
-          log-variables: true
 
   perform-e2e-tests:
     needs: build-plugin
@@ -81,6 +67,21 @@ jobs:
 #        MYSQL_USER: wpuser
 #        MYSQL_PASSWORD: ${{ steps.dotenv.outputs.DB_PASSWORD }}
     steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Composer Script - Generate .env
+        uses: php-actions/composer@v6
+        with:
+          php_version: '7.4'
+          command: run-script env:generate
+
+      - name: Publish Enviroment from .env
+        id: dotenv
+        uses: falti/dotenv-action@v0.2
+        with:
+          log-variables: true
+
       - name: Output .env
         run: |
             echo ${{ steps.dotenv.outputs.DB_ROOT_PASSWORD }}
