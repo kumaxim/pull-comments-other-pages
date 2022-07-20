@@ -7,7 +7,7 @@ on:
       - master
   workflow_dispatch:
 
-#jobs:
+jobs:
 #  build:
 #    runs-on: ubuntu-latest
 #
@@ -63,7 +63,7 @@ on:
 #          path: pull-comments-other-pages.zip
 
   e2e-tests:
-    needs: [build]
+#    needs: [build]
     runs-on: ubuntu-latest
 
     services:
