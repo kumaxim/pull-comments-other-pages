@@ -81,19 +81,22 @@ jobs:
           --health-interval 5s
           --health-timeout 5s
           --health-retries 5
-
-    container:
-      image: wordpress:6.0-php7.4-fpm
-      env:
-        WORDPRESS_DB_HOST: mysql
-        MYSQL_DATABASE: wordpress
-        MYSQL_USER: wpuser
-        MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
-      options: >-
-        --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
-        --health-interval 5s
-        --health-timeout 5s
-        --health-retries 5
+      wordpress:
+        image: 6.0-php7.4-apache
+        ports:
+          - 80:80
+        env:
+          WORDPRESS_DB_HOST: mysql
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wpuser
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
+        volumes:
+          - wordpress:/var/www/html
+        options: >-
+          --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
       - name: Check out repository code
@@ -104,11 +107,15 @@ jobs:
 #        with:
 #          name: plugin-build
 
-      - name: List www
-        run: |
-          ls -l .
-          /usr/local/bin/docker-entrypoint.sh php-fpm
-          ls -l /var/www/html
+      - name: List WordPress directory
+        uses: docker://wordpress:cli-2.6-php7.4
+        with:
+          args: --volume wordpress ls -l /var/www/html
+
+      - name: List WordPress config
+          uses: docker://wordpress:cli-2.6-php7.4
+          with:
+            args: --volume wordpress cat /var/www/html/wp-config.php
 
 #      - name: Install WordPress
 #        uses: docker://wordpress:cli-2.6-php7.4
