@@ -141,9 +141,10 @@ jobs:
 
       - run: |
           docker cp wp-cli.yml wp_cli:/var/www/html/wp-cli.yml
-          docker cp dist/pull-comments-other-pages.zip wp_cli:/var/www/html/wp-content/uploads
-          docker cp tests/dummy.xml wp_cli:/var/www/html/wp-content/uploads
-          docker exec wp_cli ls -l /var/www/html/wp-content/uploads
+          docker exec wp_cli mkdir -p /var/www/html/wp-content/uploads/gh-src
+          docker cp dist/pull-comments-other-pages.zip wp_cli:/var/www/html/wp-content/uploads/gh-src
+          docker cp tests/dummy.xml wp_cli:/var/www/html/wp-content/uploads/gh-src
+          docker exec wp_cli ls -l /var/www/html/wp-content/uploads/gh-src
 
 
       - name: Install and Seed WordPress
