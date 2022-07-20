@@ -8,62 +8,62 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-
-      - name: Setup NodeJS v16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: yarn
-
-      - name: Compile Assets
-        run: |
-          yarn install --frozen-lockfile --ignore-scripts
-          yarn run lint:scripts
-          yarn run lint:styles
-          yarn run build:production
-
-      - name: Cache Composer Dependencies
-        uses: actions/cache@v3
-        with:
-          path: /tmp/composer-cache
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Install Composer Dependencies
-        uses: php-actions/composer@v6
-        with:
-          progress: 'yes'
-          php_version: '7.4'
-          command: update --optimize-autoloader
-
-      - name: Composer Script - Lint PHP Files
-        uses: php-actions/composer@v6
-        with:
-          php_version: '7.4'
-          command: run-script lint:php
-
-      - name: Composer Script - Build Archive
-        uses: php-actions/composer@v6
-        with:
-          progress: 'yes'
-          php_version: '7.4'
-          command: run-script build:production
-
-      - name: Upload build as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: plugin-build
-          path: pull-comments-other-pages.zip
+#  build:
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Check out repository code
+#        uses: actions/checkout@v3
+#
+#      - name: Setup NodeJS v16
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: 16
+#          cache: yarn
+#
+#      - name: Compile Assets
+#        run: |
+#          yarn install --frozen-lockfile --ignore-scripts
+#          yarn run lint:scripts
+#          yarn run lint:styles
+#          yarn run build:production
+#
+#      - name: Cache Composer Dependencies
+#        uses: actions/cache@v3
+#        with:
+#          path: /tmp/composer-cache
+#          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-composer-
+#
+#      - name: Install Composer Dependencies
+#        uses: php-actions/composer@v6
+#        with:
+#          progress: 'yes'
+#          php_version: '7.4'
+#          command: update --optimize-autoloader
+#
+#      - name: Composer Script - Lint PHP Files
+#        uses: php-actions/composer@v6
+#        with:
+#          php_version: '7.4'
+#          command: run-script lint:php
+#
+#      - name: Composer Script - Build Archive
+#        uses: php-actions/composer@v6
+#        with:
+#          progress: 'yes'
+#          php_version: '7.4'
+#          command: run-script build:production
+#
+#      - name: Upload build as artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: plugin-build
+#          path: pull-comments-other-pages.zip
 
   e2e-tests:
-    needs: [build]
+#    needs: [build]
     runs-on: ubuntu-latest
 
     services:
@@ -77,6 +77,7 @@ jobs:
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         options: >-
+          --hostname wordpress_mysql
           --health-cmd "mysql --user=wpuser --password=$MYSQL_PASSWORD --execute \"SHOW DATABASES LIKE 'wordpress';\""
           --health-interval 5s
           --health-timeout 5s
@@ -86,7 +87,7 @@ jobs:
         ports:
           - 80:80
         env:
-          WORDPRESS_DB_HOST: localhost
+          WORDPRESS_DB_HOST: wordpress_mysql
           MYSQL_DATABASE: wordpress
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
@@ -100,7 +101,7 @@ jobs:
       wpcli:
         image: kumaxim/wpcli-keep-running:cli-2.6-php7.4
         env:
-          WORDPRESS_DB_HOST: localhost
+          WORDPRESS_DB_HOST: wordpress_mysql
           MYSQL_DATABASE: wordpress
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
