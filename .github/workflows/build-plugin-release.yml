@@ -109,14 +109,13 @@ jobs:
 
       - name: List WordPress directory
         uses: docker://wordpress:cli-2.6-php7.4
+        volumes: wordpress:/github/workspace/wordpress
         with:
-          volumes: wordpress
           args: ls -l /var/www/html
 
       - name: List WordPress config
         uses: docker://wordpress:cli-2.6-php7.4
         with:
-          volumes: wordpress
           args: cat /var/www/html/wp-config.php
 
 #      - name: Install WordPress
