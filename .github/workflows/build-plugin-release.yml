@@ -77,7 +77,7 @@ jobs:
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         options: >-
-          --hostname wordpress_mysql
+          --name wordpress_mysql
           --health-cmd "mysql --user=wpuser --password=$MYSQL_PASSWORD --execute \"SHOW DATABASES LIKE 'wordpress';\""
           --health-interval 5s
           --health-timeout 5s
