@@ -45,6 +45,8 @@
             "wordpress/",
             "node_modules/",
             "example.env",
+            "docker_tag",
+            "DOCKER_ENV",
             "/*.lock",
             "!/composer.lock",
             "/*.json",
