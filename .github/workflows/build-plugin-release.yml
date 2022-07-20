@@ -134,8 +134,10 @@ jobs:
           php_version: '7.4'
           command: update --optimize-autoloader
 
-      - run: vendor/bin/wp --ssh=docker:xfs@wp_cli --info
+      - run: docker cp wp-cli.yml wp_cli:/var/www/html/wp-cli.yml
       - run:  vendor/bin/wp --info
+      - run:  vendor/bin/wp --ssh=docker:xfs@wp_cli --info
+
 
 #        - name: Download Build
 #          uses: actions/download-artifact@v3
