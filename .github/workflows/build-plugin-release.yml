@@ -77,7 +77,6 @@ jobs:
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         options: >-
-          --name mysql
           --health-cmd "mysql --user=wpuser --password=$MYSQL_PASSWORD --execute \"SHOW DATABASES LIKE 'wordpress';\""
           --health-interval 5s
           --health-timeout 5s
@@ -87,14 +86,13 @@ jobs:
         ports:
           - 80:80
         env:
-          WORDPRESS_DB_HOST: mysql
+          WORDPRESS_DB_HOST: localhost
           MYSQL_DATABASE: wordpress
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         volumes:
           - wordpress:/var/www/html
         options: >-
-          --name wp_core
           --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
           --health-interval 5s
           --health-timeout 5s
@@ -102,7 +100,7 @@ jobs:
       wpcli:
         image: kumaxim/wpcli-keep-running:cli-2.6-php7.4
         env:
-          WORDPRESS_DB_HOST: mysql
+          WORDPRESS_DB_HOST: localhost
           MYSQL_DATABASE: wordpress
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
