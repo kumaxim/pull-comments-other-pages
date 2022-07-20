@@ -142,7 +142,7 @@ jobs:
 
       - name: Install and Seed WordPress
         env:
-          MYSQL_SERVICE_IP: docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' wordpress_mysql
+          MYSQL_SERVICE_IP: $(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' wordpress_mysql)
         run: |
           vendor/bin/wp --ssh=docker:xfs@wp_cli core config --dbhost=$MYSQL_SERVICE_IP --dbuser=wpuser --dbpass=${{ secrets.MYSQL_DB_PASSWORD }} --dbprefix=wp0l_
           vendor/bin/wp --ssh=docker:xfs@wp_cli core install --admin_password=${{ secrets.WP_ADMIN_PASSWORD }}
