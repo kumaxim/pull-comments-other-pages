@@ -107,7 +107,7 @@ jobs:
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         volumes:
-          wordpress:/var/www/html
+          - wordpress:/var/www/html
         options: >-
           --name wp_cli
           --health-cmd "wp --info"
