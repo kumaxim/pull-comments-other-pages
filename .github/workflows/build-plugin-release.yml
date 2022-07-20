@@ -122,6 +122,11 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: plugin-build
+          path: dist
+
+      - run: |
+          ls -l .
+          ls -l ${{steps.download.outputs.download-path}}
 
       - name: Cache Composer Dependencies
         uses: actions/cache@v3
