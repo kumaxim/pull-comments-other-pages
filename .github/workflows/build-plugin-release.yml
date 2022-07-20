@@ -107,7 +107,7 @@ jobs:
       - name: List www
         run: |
           ls -l .
-          /usr/local/bin/docker-entrypoint.sh
+          /usr/local/bin/docker-entrypoint.sh php-fpm
           ls -l /var/www/html
 
 #      - name: Install WordPress
