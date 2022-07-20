@@ -94,6 +94,7 @@ jobs:
         volumes:
           - wordpress:/var/www/html
         options: >-
+          --name wordpress_core
           --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
           --health-interval 5s
           --health-timeout 5s
@@ -141,11 +142,10 @@ jobs:
 
       - run: |
           docker cp wp-cli.yml wp_cli:/var/www/html/wp-cli.yml
-          docker exec wp_cli mkdir -p /var/www/html/wp-content/uploads/gh-src
+          docker exec wordpress_core mkdir -p /var/www/html/wp-content/uploads/gh-src
           docker cp dist/pull-comments-other-pages.zip wp_cli:/var/www/html/wp-content/uploads/gh-src
           docker cp tests/dummy.xml wp_cli:/var/www/html/wp-content/uploads/gh-src
           docker exec wp_cli ls -l /var/www/html/wp-content/uploads/gh-src
-
 
       - name: Install and Seed WordPress
         run: |
@@ -153,10 +153,10 @@ jobs:
           vendor/bin/wp --ssh=docker:xfs@wp_cli core config --dbhost=$MYSQL_WORDPRESS_SERVICE_IP --dbuser=wpuser --dbpass=${{ secrets.MYSQL_DB_PASSWORD }} --dbprefix=wp0l_
           vendor/bin/wp --ssh=docker:xfs@wp_cli core install --admin_password=${{ secrets.WP_ADMIN_PASSWORD }}
           vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install wordpress-importer --activate
-          vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install wp-content/uploads/pull-comments-other-pages.zip --activate
+          vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install wp-content/uploads/gh-src/pull-comments-other-pages.zip --activate
           vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(wp --ssh=docker:xfs@wp_cli post list --format=ids) --force
           vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(wp --ssh=docker:xfs@wp_cli post list --post_type=page --format=ids) --force
-          vendor/bin/wp --ssh=docker:xfs@wp_cli import wp-content/uploads/dummy.xml
+          vendor/bin/wp --ssh=docker:xfs@wp_cli import wp-content/uploads/gh-src/dummy.xml
 
 #      - name: Install WordPress
 #        uses: docker://wordpress:cli-2.6-php7.4
