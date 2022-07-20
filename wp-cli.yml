@@ -2,9 +2,6 @@
   ssh: docker-compose:xfs@wpcli
   path: /var/www/html
 
-@gh_actions:
-   ssh: docker:xfs@wpcli
-
 core config:
   dbname: 'wordpress'
   force: true
