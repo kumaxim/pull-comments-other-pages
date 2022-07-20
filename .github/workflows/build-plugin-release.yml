@@ -123,6 +123,9 @@ jobs:
 #        with:
 #          name: plugin-build
 
+      -run: mysql --user=wpuser --password=$MYSQL_PASSWORD --execute \"SHOW DATABASES LIKE 'wordpress';\"
+      -run: mysql --user=wpuser --host=wordpress_mysql --password=$MYSQL_PASSWORD --execute \"SHOW DATABASES LIKE 'wordpress';\"
+
       - name: Cache Composer Dependencies
         uses: actions/cache@v3
         with:
