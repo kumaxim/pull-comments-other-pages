@@ -140,7 +140,8 @@ jobs:
           php_version: '7.4'
           command: update --optimize-autoloader
 
-      - run: |
+      - name: Prepare WordPress Installation
+        run: |
           docker cp wp-cli.yml wp_cli:/var/www/html/wp-cli.yml
           docker exec wordpress_core mkdir -p /var/www/html/wp-content/uploads/gh-src
           docker cp dist/pull-comments-other-pages.zip wp_cli:/var/www/html/wp-content/uploads/gh-src
@@ -156,6 +157,12 @@ jobs:
           vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(vendor/bin/wp --ssh=docker:xfs@wp_cli post list --format=ids) --force
           vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(vendor/bin/wp --ssh=docker:xfs@wp_cli post list --post_type=page --format=ids) --force
           vendor/bin/wp --ssh=docker:xfs@wp_cli import wp-content/uploads/gh-src/dummy.xml
+
+      - name: Test WordPress
+        uses: swinton/screenshot-website@v1.x
+        with:
+          source: http://localhost:80
+          destination: screenshot.png
 
 #    steps:
 #      - name: Composer Script - Generate .env
