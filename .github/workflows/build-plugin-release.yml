@@ -77,6 +77,7 @@ jobs:
           MYSQL_USER: wpuser
           MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
         options: >-
+          --name mysql
           --health-cmd "mysql --user=wpuser --password=$MYSQL_PASSWORD --execute \"SHOW DATABASES LIKE 'wordpress';\""
           --health-interval 5s
           --health-timeout 5s
@@ -93,32 +94,53 @@ jobs:
         volumes:
           - wordpress:/var/www/html
         options: >-
+          --name wp_core
           --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
           --health-interval 5s
           --health-timeout 5s
           --health-retries 5
-
-    container:
-      image: wordpress:cli-2.6-php7.4
-      env:
-        WORDPRESS_DB_HOST: mysql
-        MYSQL_DATABASE: wordpress
-        MYSQL_USER: wpuser
-        MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
-      volumes:
-        - wordpress:/github/workspace/wordpress
+      wpcli:
+        image: kumaxim/wpcli-keep-running:cli-2.6-php7.4
+        env:
+          WORDPRESS_DB_HOST: mysql
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wpuser
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
+        volumes:
+          wordpress:/var/www/html:nocopy
+        options: >-
+          --name wp_cli
+          --health-cmd "wp --info"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
-#      - name: Check out repository code
-#        uses: actions/checkout@v3
+      - name: Check out repository code
+        uses: actions/checkout@v3
 
-#      - name: Download Build
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: plugin-build
+      - name: Cache Composer Dependencies
+        uses: actions/cache@v3
+        with:
+          path: /tmp/composer-cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
-      - run: ls -l /github/workspace/wordpress
-      - run: cat /github/workspace/wordpress/wp-config.php
+        - name: Install Composer Dependencies
+          uses: php-actions/composer@v6
+          with:
+            progress: 'yes'
+            php_version: '7.4'
+            command: update --optimize-autoloader
+
+        - run: vendor/bin/wp --ssh=docker:xfs@wp_cli --info
+        - run  vendor/bin/wp --info
+
+#        - name: Download Build
+#          uses: actions/download-artifact@v3
+#          with:
+#            name: plugin-build
 
 #      - name: Install WordPress
 #        uses: docker://wordpress:cli-2.6-php7.4
