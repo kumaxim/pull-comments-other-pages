@@ -119,6 +119,13 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
+        - name: Download Build
+          uses: actions/download-artifact@v3
+          with:
+            name: plugin-build
+
+      - run: ls -l .
+
       - name: Cache Composer Dependencies
         uses: actions/cache@v3
         with:
@@ -135,14 +142,19 @@ jobs:
           command: update --optimize-autoloader
 
       - run: docker cp wp-cli.yml wp_cli:/var/www/html/wp-cli.yml
-      - run:  vendor/bin/wp --info
-      - run:  vendor/bin/wp --ssh=docker:xfs@wp_cli --info
+
+#      - name: Install and Seed WordPress
+#        run: |
+#          vendor/bin/wp --ssh=docker:xfs@wp_cli core install --admin_password=${{ secrents.WP_ADMIN_PASSWORD }}
+#          vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install wordpress-importer --activate
+#          vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install wordpress-importer --activate
+#          vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(wp --ssh=docker:xfs@wp_cli post list --format=ids) --force
+#          vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(wp --ssh=docker:xfs@wp_cli post list --post_type=page --format=ids) --force
+#          vendor/bin/wp --ssh=docker:xfs@wp_cli import wp-content/plugins/pull-comments-other-pages/tests/dummy.xml
 
 
-#        - name: Download Build
-#          uses: actions/download-artifact@v3
-#          with:
-#            name: plugin-build
+
+
 
 #      - name: Install WordPress
 #        uses: docker://wordpress:cli-2.6-php7.4
