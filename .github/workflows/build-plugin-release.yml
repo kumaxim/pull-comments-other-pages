@@ -11,44 +11,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-#    services:
-#      nginx:
-#        image: nginx:latest
-#        ports:
-#          - 80:80
-#        volumes:
-#          - wordpress:/var/www/html:ro
-#
-#      mysql:
-#        image: mysql:5.7
-#        ports:
-#          - 3306:3306
-#        env:
-#          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
-#          MYSQL_DATABASE: wordpress
-#          MYSQL_USER: wpuser
-#          MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
-#        options: >-
-#          --health-cmd "mysql --user=wpuser --password=$MYSQL_PASSWORD --execute \"SHOW DATABASES;\""
-#          --health-interval 5s
-#          --health-timeout 5s
-#          --health-retries 5
-#
-#      wordpress:
-#        image: wordpress:6.0-php7.4-fpm
-#        env:
-#          WORDPRESS_DB_HOST: mysql
-#          MYSQL_DATABASE: wordpress
-#          MYSQL_USER: wpuser
-#          MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
-#        volumes:
-#          - /home/runner/work/pull-comnents-other-pages/pull-comnents-other-pages/wordpress:/var/www/html:nocopy
-#        options: >-
-#          --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
-#          --health-interval 5s
-#          --health-timeout 5s
-#          --health-retries 5
-
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -106,9 +68,38 @@ jobs:
           name: plugin-build
           path: pull-comments-other-pages.zip
 
-  perform-e2e-tests:
+  e2e-tests:
     needs: [build]
     runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_DATABASE: wordpress
+          MYSQL_USER: wpuser
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
+        options: >-
+          --health-cmd "mysql --user=wpuser --password=$MYSQL_PASSWORD --execute \"SHOW DATABASES LIKE 'wordpress';\""
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
+    container:
+      image: wordpress:6.0-php7.4-fpm
+      env:
+        WORDPRESS_DB_HOST: mysql
+        MYSQL_DATABASE: wordpress
+        MYSQL_USER: wpuser
+        MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
+      options: >-
+        --health-cmd "bash -c \"[ -f /var/www/html/wp-config.php ]\""
+        --health-interval 5s
+        --health-timeout 5s
+        --health-retries 5
 
     steps:
       - name: Check out repository code
@@ -118,13 +109,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: plugin-build
-#    container:
-#      image: mysql:5.7
-#      env:
-#        MYSQL_ROOT_PASSWORD: ${{ steps.dotenv.outputs.DB_ROOT_PASSWORD }}
-#        MYSQL_DATABASE: wordpress
-#        MYSQL_USER: wpuser
-#        MYSQL_PASSWORD: ${{ steps.dotenv.outputs.DB_PASSWORD }}
+
+      - name: Install WordPress
+        uses: docker://wordpress:cli-2.6-php7.4
+        with:
+          args: --path=/var/www/html core install --admin_password=${{ secrets.WP_ADMIN_PASSWORD }}
+
 #    steps:
 #      - name: Composer Script - Generate .env
 #        uses: php-actions/composer@v6
