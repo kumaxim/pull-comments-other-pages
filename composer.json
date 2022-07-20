@@ -85,8 +85,8 @@
             "if wp @staging core is-installed; then wp @staging db reset --yes; fi",
             "wp @staging core install --admin_password=$(grep -v '^#' .env | grep WP_ADMIN_PASSWORD | cut -d'=' -f2-)",
             "wp @staging plugin activate pull-comments-other-pages wordpress-importer",
-            "wp @staging post delete $(wp @staging post list --format=ids)",
-            "wp @staging post delete $(wp @staging post list --post_type=page --format=ids)",
+            "wp @staging post delete $(wp @staging post list --format=ids) --force",
+            "wp @staging post delete $(wp @staging post list --post_type=page --format=ids) --force",
             "wp @staging import wp-content/plugins/pull-comments-other-pages/tests/dummy.xml"
         ],
         "build:production": [
