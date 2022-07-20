@@ -113,9 +113,9 @@ jobs:
           args: --volume wordpress ls -l /var/www/html
 
       - name: List WordPress config
-          uses: docker://wordpress:cli-2.6-php7.4
-          with:
-            args: --volume wordpress cat /var/www/html/wp-config.php
+        uses: docker://wordpress:cli-2.6-php7.4
+        with:
+          args: --volume wordpress cat /var/www/html/wp-config.php
 
 #      - name: Install WordPress
 #        uses: docker://wordpress:cli-2.6-php7.4
