@@ -142,7 +142,9 @@ jobs:
       - run: |
           docker cp wp-cli.yml wp_cli:/var/www/html/wp-cli.yml
           docker cp dist/pull-comments-other-pages.zip wp_cli:/var/www/html/wp-content/uploads
-          docker exec -d wp_cli ls -l /var/www/html/wp-content/uploads
+          docker cp tests/dummy.xml wp_cli:/var/www/html/wp-content/uploads
+          docker exec wp_cli ls -l /var/www/html/wp-content/uploads
+
 
       - name: Install and Seed WordPress
         run: |
@@ -153,7 +155,7 @@ jobs:
           vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install wp-content/uploads/pull-comments-other-pages.zip --activate
           vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(wp --ssh=docker:xfs@wp_cli post list --format=ids) --force
           vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(wp --ssh=docker:xfs@wp_cli post list --post_type=page --format=ids) --force
-          vendor/bin/wp --ssh=docker:xfs@wp_cli import wp-content/plugins/pull-comments-other-pages/tests/dummy.xml
+          vendor/bin/wp --ssh=docker:xfs@wp_cli import wp-content/uploads/dummy.xml
 
 #      - name: Install WordPress
 #        uses: docker://wordpress:cli-2.6-php7.4
