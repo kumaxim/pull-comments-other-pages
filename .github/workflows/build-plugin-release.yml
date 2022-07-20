@@ -98,6 +98,16 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
+    container:
+      image: wordpress:cli-2.6-php7.4
+      env:
+        WORDPRESS_DB_HOST: mysql
+        MYSQL_DATABASE: wordpress
+        MYSQL_USER: wpuser
+        MYSQL_PASSWORD: ${{ secrets.MYSQL_DB_PASSWORD }}
+      volumes:
+        - wordpress:/github/workspace/wordpress
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
@@ -107,16 +117,8 @@ jobs:
 #        with:
 #          name: plugin-build
 
-      - name: List WordPress directory
-        uses: docker://wordpress:cli-2.6-php7.4
-        volumes: wordpress:/github/workspace/wordpress
-        with:
-          args: ls -l /var/www/html
-
-      - name: List WordPress config
-        uses: docker://wordpress:cli-2.6-php7.4
-        with:
-          args: cat /var/www/html/wp-config.php
+      - run: ls -l /github/workspace/wordpress
+      - run: cat /github/workspace/wordpress/wp-config.php
 
 #      - name: Install WordPress
 #        uses: docker://wordpress:cli-2.6-php7.4
