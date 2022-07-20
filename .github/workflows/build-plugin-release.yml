@@ -143,7 +143,7 @@ jobs:
 
       - name: Install and Seed WordPress
         run: |
-          vendor/bin/wp --ssh=docker:xfs@wp_cli core install --admin_password=${{ secrents.WP_ADMIN_PASSWORD }}
+          vendor/bin/wp --ssh=docker:xfs@wp_cli core install --admin_password=${{ secrets.WP_ADMIN_PASSWORD }}
           vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install wordpress-importer --activate
           vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install pull-comments-other-pages.zip --activate
           vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(wp --ssh=docker:xfs@wp_cli post list --format=ids) --force
