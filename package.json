@@ -35,7 +35,7 @@
   },
   "scripts": {
     "watch": "webpack watch --progress  --mode development",
-    "build:production": "webpack --progress --mode production",
+    "build:production": "webpack --mode production",
     "lint:scripts": "DEBUG=eslint:cli-engine eslint \"resources/**/*.{tsx,ts,js}\"",
     "lint:styles": "stylelint \"resources/**/*.{css,sass,scss,sss,less}\" --custom-syntax postcss-scss --formatter verbose"
   }
