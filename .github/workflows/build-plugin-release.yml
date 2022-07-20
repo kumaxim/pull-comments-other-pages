@@ -8,62 +8,62 @@ on:
   workflow_dispatch:
 
 jobs:
-#  build:
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Check out repository code
-#        uses: actions/checkout@v3
-#
-#      - name: Setup NodeJS v16
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: 16
-#          cache: yarn
-#
-#      - name: Compile Assets
-#        run: |
-#          yarn install --frozen-lockfile --ignore-scripts
-#          yarn run lint:scripts
-#          yarn run lint:styles
-#          yarn run build:production
-#
-#      - name: Cache Composer Dependencies
-#        uses: actions/cache@v3
-#        with:
-#          path: /tmp/composer-cache
-#          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-#          restore-keys: |
-#            ${{ runner.os }}-composer-
-#
-#      - name: Install Composer Dependencies
-#        uses: php-actions/composer@v6
-#        with:
-#          progress: 'yes'
-#          php_version: '7.4'
-#          command: update --optimize-autoloader
-#
-#      - name: Composer Script - Lint PHP Files
-#        uses: php-actions/composer@v6
-#        with:
-#          php_version: '7.4'
-#          command: run-script lint:php
-#
-#      - name: Composer Script - Build Archive
-#        uses: php-actions/composer@v6
-#        with:
-#          progress: 'yes'
-#          php_version: '7.4'
-#          command: run-script build:production
-#
-#      - name: Upload build as artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: plugin-build
-#          path: pull-comments-other-pages.zip
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Setup NodeJS v16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: yarn
+
+      - name: Compile Assets
+        run: |
+          yarn install --frozen-lockfile --ignore-scripts
+          yarn run lint:scripts
+          yarn run lint:styles
+          yarn run build:production
+
+      - name: Cache Composer Dependencies
+        uses: actions/cache@v3
+        with:
+          path: /tmp/composer-cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install Composer Dependencies
+        uses: php-actions/composer@v6
+        with:
+          progress: 'yes'
+          php_version: '7.4'
+          command: update --optimize-autoloader
+
+      - name: Composer Script - Lint PHP Files
+        uses: php-actions/composer@v6
+        with:
+          php_version: '7.4'
+          command: run-script lint:php
+
+      - name: Composer Script - Build Archive
+        uses: php-actions/composer@v6
+        with:
+          progress: 'yes'
+          php_version: '7.4'
+          command: run-script build:production
+
+      - name: Upload build as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: plugin-build
+          path: pull-comments-other-pages.zip
 
   e2e-tests:
-#    needs: [build]
+    needs: [build]
     runs-on: ubuntu-latest
 
     services:
@@ -124,8 +124,6 @@ jobs:
         with:
           name: plugin-build
 
-      - run: ls -l .
-
       - name: Cache Composer Dependencies
         uses: actions/cache@v3
         with:
@@ -143,18 +141,14 @@ jobs:
 
       - run: docker cp wp-cli.yml wp_cli:/var/www/html/wp-cli.yml
 
-#      - name: Install and Seed WordPress
-#        run: |
-#          vendor/bin/wp --ssh=docker:xfs@wp_cli core install --admin_password=${{ secrents.WP_ADMIN_PASSWORD }}
-#          vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install wordpress-importer --activate
-#          vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install wordpress-importer --activate
-#          vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(wp --ssh=docker:xfs@wp_cli post list --format=ids) --force
-#          vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(wp --ssh=docker:xfs@wp_cli post list --post_type=page --format=ids) --force
-#          vendor/bin/wp --ssh=docker:xfs@wp_cli import wp-content/plugins/pull-comments-other-pages/tests/dummy.xml
-
-
-
-
+      - name: Install and Seed WordPress
+        run: |
+          vendor/bin/wp --ssh=docker:xfs@wp_cli core install --admin_password=${{ secrents.WP_ADMIN_PASSWORD }}
+          vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install wordpress-importer --activate
+          vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install pull-comments-other-pages.zip --activate
+          vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(wp --ssh=docker:xfs@wp_cli post list --format=ids) --force
+          vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(wp --ssh=docker:xfs@wp_cli post list --post_type=page --format=ids) --force
+          vendor/bin/wp --ssh=docker:xfs@wp_cli import wp-content/plugins/pull-comments-other-pages/tests/dummy.xml
 
 #      - name: Install WordPress
 #        uses: docker://wordpress:cli-2.6-php7.4
