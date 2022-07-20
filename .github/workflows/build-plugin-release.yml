@@ -7,66 +7,60 @@ on:
       - master
   workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-
-      - name: Setup NodeJS v16
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: yarn
-
-      - name: Compile Assets
-        run: |
-          yarn install --frozen-lockfile --ignore-scripts
-          yarn run lint:scripts
-          yarn run lint:styles
-          yarn run build:production
-
-      - name: Cache Composer Dependencies
-        uses: actions/cache@v3
-        with:
-          path: /tmp/composer-cache
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Install Composer Dependencies
-        uses: php-actions/composer@v6
-        with:
-          progress: 'yes'
-          php_version: '7.4'
-          command: update --optimize-autoloader
-
-      - name: Composer Script - Lint PHP Files
-        uses: php-actions/composer@v6
-        with:
-          php_version: '7.4'
-          command: run-script lint:php
-
-#      - name: Install WordPress
-#        uses: docker://wordpress:cli-2.6-php7.4
-#        with:
-          # args: plugin install wordpress-importer --activate
-#          args: --path=wordpress core install --admin_password=$(grep -v '^#' .env | grep WP_ADMIN_PASSWORD | cut -d'=' -f2-)
+#jobs:
+#  build:
+#    runs-on: ubuntu-latest
 #
-      - name: Composer Script - Build Archive
-        uses: php-actions/composer@v6
-        with:
-          progress: 'yes'
-          php_version: '7.4'
-          command: run-script build:production
-
-      - name: Upload build as artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: plugin-build
-          path: pull-comments-other-pages.zip
+#    steps:
+#      - name: Check out repository code
+#        uses: actions/checkout@v3
+#
+#      - name: Setup NodeJS v16
+#        uses: actions/setup-node@v3
+#        with:
+#          node-version: 16
+#          cache: yarn
+#
+#      - name: Compile Assets
+#        run: |
+#          yarn install --frozen-lockfile --ignore-scripts
+#          yarn run lint:scripts
+#          yarn run lint:styles
+#          yarn run build:production
+#
+#      - name: Cache Composer Dependencies
+#        uses: actions/cache@v3
+#        with:
+#          path: /tmp/composer-cache
+#          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+#          restore-keys: |
+#            ${{ runner.os }}-composer-
+#
+#      - name: Install Composer Dependencies
+#        uses: php-actions/composer@v6
+#        with:
+#          progress: 'yes'
+#          php_version: '7.4'
+#          command: update --optimize-autoloader
+#
+#      - name: Composer Script - Lint PHP Files
+#        uses: php-actions/composer@v6
+#        with:
+#          php_version: '7.4'
+#          command: run-script lint:php
+#
+#      - name: Composer Script - Build Archive
+#        uses: php-actions/composer@v6
+#        with:
+#          progress: 'yes'
+#          php_version: '7.4'
+#          command: run-script build:production
+#
+#      - name: Upload build as artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: plugin-build
+#          path: pull-comments-other-pages.zip
 
   e2e-tests:
     needs: [build]
@@ -110,10 +104,15 @@ jobs:
         with:
           name: plugin-build
 
-      - name: Install WordPress
-        uses: docker://wordpress:cli-2.6-php7.4
-        with:
-          args: --path=/var/www/html core install --admin_password=${{ secrets.WP_ADMIN_PASSWORD }}
+      - name: List www
+        run: |
+          ls -l .
+          ls -l /var/www/html
+
+#      - name: Install WordPress
+#        uses: docker://wordpress:cli-2.6-php7.4
+#        with:
+#          args: --path=/var/www/html core install --admin_password=${{ secrets.WP_ADMIN_PASSWORD }}
 
 #    steps:
 #      - name: Composer Script - Generate .env
