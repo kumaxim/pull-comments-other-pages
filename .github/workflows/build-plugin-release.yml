@@ -2,16 +2,16 @@ name: Build Plugin Release
 
 on:
   push:
-    tags-ignore:
-      - 'v**'
+#    tags-ignore:
+#      - 'v**'
     paths-ignore:
       - 'LICENSE'
       - '**.md'
   pull_request:
     branches:
       - master
-    tags-ignore:
-      - 'v**'
+#    tags-ignore:
+#      - 'v**'
     paths-ignore:
       - 'LICENSE'
       - '**.md'
