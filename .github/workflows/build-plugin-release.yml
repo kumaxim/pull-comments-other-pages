@@ -75,15 +75,15 @@ jobs:
   e2e-tests:
     needs: [build]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        php: [5.6, 7.0, 7.1, 7.2, 7.3, 7.4]
-        mysql: [5.5, 5.6, 5.7]
-        wordpress: [5.8, 5.9, 6.0]
+#    strategy:
+#      matrix:
+#        php: [5.6, 7.0, 7.1, 7.2, 7.3, 7.4]
+#        mysql: [5.5, 5.6, 5.7]
+#        wordpress: [5.8, 5.9, 6.0]
 
     services:
       mysql:
-        image: mysql:${{ matrix.mysql }}
+        image: mysql:5.7
         ports:
           - 3306:3306
         env:
@@ -98,7 +98,7 @@ jobs:
           --health-timeout 5s
           --health-retries 5
       wordpress:
-        image: wordpress:${{ matrix.wordpress }}-php${{ matrix.php }}-apache
+        image: wordpress:6.0-php7.4-apache
         ports:
           - 80:80
         env:
@@ -173,15 +173,24 @@ jobs:
           vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(vendor/bin/wp --ssh=docker:xfs@wp_cli post list --post_type=page --format=ids) --force
           vendor/bin/wp --ssh=docker:xfs@wp_cli import wp-content/uploads/gh-src/dummy.xml
 
-#      - name: Verify WordPress Installation
-#        run: |
-#          vendor/bin/wp --ssh=docker:xfs@wp_cli core is-installed
-#          curl
-#
-#      - name: Run Cypress E2E Tests
-#        uses: cypress-io/github-action@v4
-#        with:
-#          browser: 'chrome'
+      - name: Verify WordPress Installation
+        run: |
+          if vendor/bin/wp --ssh=docker:xfs@wp_cli core is-installed; then echo "WordPress was not installed"; exit 127; fi
+          curl -f -LI http://localhost/
+
+      - name: Run End2End Tests
+        uses: cypress-io/github-action@v4
+        env:
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          wp_pass: ${{ secrets.WP_ADMIN_PASSWORD }}
+          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
+        with:
+          record: true
+          wait-on: 'http://localhost/'
+          wait-on-timeout: 10
+          browser: 'chrome'
+          working-directory: 'tests'
 
 #    steps:
 #      - name: Composer Script - Generate .env
