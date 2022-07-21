@@ -2,20 +2,38 @@ name: Build Plugin Release
 
 on:
   push:
-#    tags-ignore:
-#      - 'v**'
     paths-ignore:
       - 'LICENSE'
       - '**.md'
   pull_request:
     branches:
       - master
-#    tags-ignore:
-#      - 'v**'
     paths-ignore:
       - 'LICENSE'
       - '**.md'
   workflow_dispatch:
+    inputs:
+      php_version:
+        description: 'PHP version'
+        default: 7.4
+        type: choice
+        options:
+          - 8.1
+          - 8.0
+          - 7.4
+          - 7.3
+          - 7.2
+          - 7.1
+          - 7.0
+          - 5.6
+      mysql_version:
+        description: 'MySQL version'
+        default: 7.4
+        type: choice
+        options:
+          - 5.5
+          - 5.6
+          - 5.7
 
 jobs:
   build:
@@ -175,7 +193,7 @@ jobs:
 
       - name: Verify WordPress Installation
         run: |
-          if vendor/bin/wp --ssh=docker:xfs@wp_cli core is-installed; then echo "WordPress was not installed"; exit 127; fi
+          if ! vendor/bin/wp --ssh=docker:xfs@wp_cli core is-installed; then echo "WordPress was not installed"; exit 127; fi
           curl -f -LI http://localhost/
 
       - name: Run End2End Tests
