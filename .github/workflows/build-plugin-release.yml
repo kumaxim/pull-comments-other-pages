@@ -173,6 +173,21 @@ jobs:
           php_version: '7.4'
           command: update --optimize-autoloader
 
+      - name: Generate .env usign Composer pre-defined script
+        uses: php-actions/composer@v6
+        with:
+          php_version: '7.4'
+          command: run-script env:generate
+
+      - name: Add Cypress Dashboard Project ID to Envs
+        run: echo -e "CYPRESS_PROJECT_ID=${{ secrets.CYPRESS_PROJECT_ID }}" >> .env
+
+      - name: Create Enviroment Variables from .env
+        id: dotenv
+        uses: falti/dotenv-action@v0.2
+        with:
+          log-variables: true
+
       - name: Prepare WordPress Installation
         run: |
           docker cp wp-cli.yml wp_cli:/var/www/html/wp-cli.yml
@@ -184,7 +199,7 @@ jobs:
         run: |
           MYSQL_WORDPRESS_SERVICE_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' wordpress_mysql)
           vendor/bin/wp --ssh=docker:xfs@wp_cli core config --dbhost=$MYSQL_WORDPRESS_SERVICE_IP --dbuser=wpuser --dbpass=${{ secrets.MYSQL_DB_PASSWORD }} --dbprefix=wp0l_
-          vendor/bin/wp --ssh=docker:xfs@wp_cli core install --admin_password=${{ secrets.WP_ADMIN_PASSWORD }}
+          vendor/bin/wp --ssh=docker:xfs@wp_cli core install --admin_password=${{ steps.dotenv.outputs.WP_ADMIN_PASSWORD }}
           vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install wordpress-importer --activate
           vendor/bin/wp --ssh=docker:xfs@wp_cli plugin install wp-content/uploads/gh-src/pull-comments-other-pages.zip --activate
           vendor/bin/wp --ssh=docker:xfs@wp_cli post delete $(vendor/bin/wp --ssh=docker:xfs@wp_cli post list --format=ids) --force
@@ -201,32 +216,12 @@ jobs:
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          wp_pass: ${{ secrets.WP_ADMIN_PASSWORD }}
-          CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
         with:
           record: true
           wait-on: 'http://localhost/'
           wait-on-timeout: 10
           browser: 'chrome'
           install-command: yarn --frozen-lockfile --silent
-
-#    steps:
-#      - name: Composer Script - Generate .env
-#        uses: php-actions/composer@v6
-#        with:
-#          php_version: '7.4'
-#          command: run-script env:generate
-#
-#      - name: Publish Enviroment from .env
-#        id: dotenv
-#        uses: falti/dotenv-action@v0.2
-#        with:
-#          log-variables: true
-#
-#      - name: Output .env
-#        run: |
-#            echo ${{ steps.dotenv.outputs.DB_ROOT_PASSWORD }}
-#            echo ${{ steps.dotenv.outputs.DB_PASSWORD }}
 
 #  publish-gh-release:
 #    needs: perform-e2e-tests
