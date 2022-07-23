@@ -73,7 +73,8 @@
             "if ! grep -q DB_PASSWORD .env; then echo DB_PASSWORD=$(expr 5 + $(date +%s) | sha256sum | base64 | head -c 32) >> .env; fi",
             "if ! grep -q DB_TESTS_ROOT_PASSWORD .env; then echo DB_TESTS_ROOT_PASSWORD=$(expr 50 + $(date +%s) | sha256sum | base64 | head -c 32) >> .env; fi",
             "if ! grep -q DB_TESTS_PASSWORD .env; then echo DB_TESTS_PASSWORD=$(expr 150 + $(date +%s) | sha256sum | base64 | head -c 32) >> .env; fi",
-            "if ! grep -q WP_ADMIN_PASSWORD .env; then echo WP_ADMIN_PASSWORD=$(date +%s | sha256sum | base64 | head -c 32) >> .env; fi"
+            "if ! grep -q WP_ADMIN_PASSWORD .env; then echo WP_ADMIN_PASSWORD=$(date +%s | sha256sum | base64 | head -c 32) >> .env; fi",
+            "if ! grep -q CYPRESS_PROJECT_ID .env; then if [ -n \"${CYPRESS_DASHBOARD_PROJECT_ID}\" ]; then echo CYPRESS_PROJECT_ID=${CYPRESS_DASHBOARD_PROJECT_ID} >> .env; fi fi"
         ],
         "wp:create-config": [
             "wp @staging core config --dbhost=$(grep -v '^#' .env | grep DOCKER_DB_IP_ADDRESS | cut -d'=' -f2-) --dbuser=wpuser --dbpass=$(grep -v '^#' .env | grep DB_PASSWORD | cut -d'=' -f2-) --dbprefix=wp0l_"

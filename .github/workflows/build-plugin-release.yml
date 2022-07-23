@@ -175,12 +175,13 @@ jobs:
 
       - name: Generate .env usign Composer pre-defined script
         uses: php-actions/composer@v6
+        env:
+          CYPRESS_DASHBOARD_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
         with:
           php_version: '7.4'
           command: run-script env:generate
 
-      - name: Add Cypress Dashboard Project ID to Envs
-        run: echo -e "CYPRESS_PROJECT_ID=${{ secrets.CYPRESS_PROJECT_ID }}" >> .env
+      - run: cat .env
 
       - name: Create Enviroment Variables from .env
         id: dotenv
