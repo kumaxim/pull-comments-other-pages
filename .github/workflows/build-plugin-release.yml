@@ -208,7 +208,6 @@ jobs:
           wait-on: 'http://localhost/'
           wait-on-timeout: 10
           browser: 'chrome'
-          working-directory: 'tests'
           install-command: yarn --frozen-lockfile --ignore-scripts --silent
 
 #    steps:
