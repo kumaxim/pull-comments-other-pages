@@ -51,7 +51,7 @@ jobs:
 
       - name: Compile Assets
         run: |
-          yarn --frozen-lockfile --ignore-scripts
+          yarn --frozen-lockfile
           yarn run lint:scripts
           yarn run lint:styles
           yarn run build:production
@@ -208,7 +208,7 @@ jobs:
           wait-on: 'http://localhost/'
           wait-on-timeout: 10
           browser: 'chrome'
-          install-command: yarn --frozen-lockfile --ignore-scripts --silent
+          install-command: yarn --frozen-lockfile --silent
 
 #    steps:
 #      - name: Composer Script - Generate .env
