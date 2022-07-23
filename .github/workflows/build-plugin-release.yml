@@ -28,7 +28,7 @@ on:
           - 5.6
       mysql_version:
         description: 'MySQL version'
-        default: 7.4
+        default: 5.7
         type: choice
         options:
           - 5.5
@@ -51,7 +51,7 @@ jobs:
 
       - name: Compile Assets
         run: |
-          yarn install --frozen-lockfile --ignore-scripts
+          yarn --frozen-lockfile --ignore-scripts
           yarn run lint:scripts
           yarn run lint:styles
           yarn run build:production
@@ -193,8 +193,8 @@ jobs:
 
       - name: Verify WordPress Installation
         run: |
-          if ! vendor/bin/wp --ssh=docker:xfs@wp_cli core is-installed; then echo "WordPress was not installed"; exit 127; fi
           curl -f -LI http://localhost/
+          if ! vendor/bin/wp --ssh=docker:xfs@wp_cli core is-installed; then echo "WordPress was not installed"; exit 127; fi
 
       - name: Run End2End Tests
         uses: cypress-io/github-action@v4
@@ -209,6 +209,7 @@ jobs:
           wait-on-timeout: 10
           browser: 'chrome'
           working-directory: 'tests'
+          install-command: yarn --frozen-lockfile --ignore-scripts --silent
 
 #    steps:
 #      - name: Composer Script - Generate .env
