@@ -18,18 +18,3 @@ import './commands'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
-
-before(() => {
-	cy.log('Change database: Create WordPress tests config');
-	cy.exec('composer wp:create-tests-config');
-	cy.wait(1000);
-
-	cy.log('WordPress reset...');
-	cy.exec('composer wp:seed');
-	cy.wait(1000);
-});
-
-after(() => {
-	cy.log('Change database: Restore WordPress config');
-	cy.exec('composer wp:create-config');
-});
