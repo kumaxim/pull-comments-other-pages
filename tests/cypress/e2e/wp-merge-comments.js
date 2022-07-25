@@ -1,5 +1,12 @@
 describe('Merge Comments From Other Pages', () => {
-	it('Assign Source Comment Pages to Destination Page in Admin Panel', function () {
+	it('Number of Comments Before Assigment', () => {
+		cy.visit('/');
+
+		cy.contains('ul.wp-block-page-list > li > a', 'Review page v2').should('be.visible').click();
+		cy.verifyCommentsNumber(Cypress.env('wp_comments_number_on_dest_before_assigment'));
+	});
+
+	it('Assign Source Comment Pages to Destination Page in Admin Panel', () => {
 		cy.adminLogin(Cypress.env('wp_user'), Cypress.env('wp_pass'));
 
 		cy.contains('#menu-pages > .wp-has-submenu > .wp-menu-name', 'Pages').should('be.visible').click();
@@ -27,11 +34,11 @@ describe('Merge Comments From Other Pages', () => {
 		cy.get('.components-snackbar__content > .components-button').should('be.visible').click();
 	});
 
-	it('Number of Comment Increased on Destination Page', () => {
+	it('Number of Comments Increased on Destination Page', () => {
 		// Pretty permalink are disabled in WordPress
 		cy.url().should('include', '?page_id=');
 
-		cy.verifyCommentsNumber(Cypress.env('wp_comments_number_on_dest_page'));
+		cy.verifyCommentsNumber(Cypress.env('wp_comments_number_on_dest_after_assigment'));
 	});
 
 	it('Number of Comments Unchanged on Source Pages', () => {
