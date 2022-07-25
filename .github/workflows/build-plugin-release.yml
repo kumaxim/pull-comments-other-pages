@@ -2,6 +2,8 @@ name: Build Plugin Release
 
 on:
   push:
+    tags:
+      - 'v**'
     paths-ignore:
       - 'LICENSE'
       - '**.md'
