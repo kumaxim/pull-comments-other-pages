@@ -253,6 +253,6 @@ jobs:
       - name: Upload Release
         uses: softprops/action-gh-release@v1
         with:
-          name: 'Draft Build: #${{github.ref_name}}'
+          name: 'Draft Build: #${{ github.sha }}'
           files: 'dist/pull-comments-other-pages.zip'
           draft: true
