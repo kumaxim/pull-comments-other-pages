@@ -97,11 +97,11 @@ jobs:
       # https://github.com/cypress-io/github-action/issues/48
       fail-fast: false
       matrix:
-        php: [7.3, 7.4, 8.0, 8.1]
-        wordpress: [5.8, 5.9, 6.0]
+        php: ['7.3', '7.4', '8.0', '8.1']
+        wordpress: ['5.8', '5.9', '6.0']
         exclude:
-          - wordpress: 6.0
-            php: 7.3
+          - wordpress: '6.0'
+            php: '7.3'
 
     services:
       mysql:
