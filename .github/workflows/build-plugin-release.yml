@@ -37,7 +37,7 @@ jobs:
     strategy:
       matrix:
         # I exclude PHP 8.0-8.1 because 'wp-coding-standards/wpcs' does not support them yet
-        php: [7.3, 7.4]
+        php: ['7.3', '7.4']
 
     steps:
       - name: Check out repository code
@@ -87,7 +87,7 @@ jobs:
       - name: Upload build as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: plugin-build-php${{ matrix.php }}
+          name: plugin-build-php:${{ matrix.php }}
           path: pull-comments-other-pages.zip
 
   e2e-tests:
@@ -159,7 +159,7 @@ jobs:
       - name: Download Build
         uses: actions/download-artifact@v3
         with:
-          name: plugin-build-php7.4
+          name: plugin-build-php:7.4
           path: dist
 
       - name: Cache Composer Dependencies
@@ -230,14 +230,14 @@ jobs:
         uses: actions/upload-artifact@v2
         if: failure()
         with:
-          name: cypress-errors-screenshots-php${{ matrix.php }}-wordpress${{ matrix.wordpress }}
+          name: cypress-errors-screenshots-php:${{ matrix.php }}-wordpress:${{ matrix.wordpress }}
           path: tests/cypress/screenshots
 
       - name: Upload Cypress Videos as Artifact
         uses: actions/upload-artifact@v2
         if: always()
         with:
-          name: cypress-videos-php${{ matrix.php }}-wordpress${{ matrix.wordpress }}
+          name: cypress-videos-php:${{ matrix.php }}-wordpress:${{ matrix.wordpress }}
           path: tests/cypress/videos
 
   publish:
@@ -248,7 +248,7 @@ jobs:
       - name: Download Build
         uses: actions/download-artifact@v3
         with:
-          name: plugin-build-php7.4
+          name: plugin-build-php:7.4
           path: dist
 
       - name: Upload Release
