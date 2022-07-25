@@ -254,5 +254,5 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: 'Draft Build: #${{github.ref_name}}'
-          file: 'dist/pull-comments-other-pages.zip'
+          files: 'dist/pull-comments-other-pages.zip'
           draft: true
