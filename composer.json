@@ -25,6 +25,9 @@
             ]
         }
     ],
+    "require": {
+        "php": ">=7.3"
+    },
     "require-dev": {
         "johnpbloch/wordpress": "^5.9",
         "wpackagist-plugin/fakerpress": "^0.5",
