@@ -2,16 +2,12 @@ name: Build Plugin Release
 
 on:
   push:
-    branches:
-      - '**'
-    tags:
-      - 'v**'
     paths-ignore:
       - 'LICENSE'
       - '**.md'
   pull_request:
     branches:
-      - 'master'
+      - master
     paths-ignore:
       - 'LICENSE'
       - '**.md'
@@ -22,6 +18,8 @@ on:
         default: 7.4
         type: choice
         options:
+          - 8.1
+          - 8.0
           - 7.4
           - 7.3
       wp_version:
@@ -38,6 +36,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        # I exclude PHP 8.0-8.1 because 'wp-coding-standards/wpcs' does not support them yet
         php: [7.3, 7.4]
 
     steps:
@@ -98,8 +97,11 @@ jobs:
       # https://github.com/cypress-io/github-action/issues/48
       fail-fast: false
       matrix:
-        php: [7.3, 7.4]
+        php: [7.3, 7.4, 8.0, 8.1]
         wordpress: [5.8, 5.9, 6.0]
+        exclude:
+          - wordpress: 6.0
+            php: 7.3
 
     services:
       mysql:
@@ -229,14 +231,14 @@ jobs:
         if: failure()
         with:
           name: cypress-errors-screenshots
-          path: cypress/screenshots
+          path: tests/cypress/screenshots
 
       - name: Upload Cypress Videos as Artifact
         uses: actions/upload-artifact@v2
         if: always()
         with:
           name: cypress-videos
-          path: cypress/videos
+          path: tests/cypress/videos
 
   publish:
     needs: [e2e-tests]
@@ -251,7 +253,7 @@ jobs:
 
       - name: Upload Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/')
         with:
-          name: 'Pull Comments Other Pages: ${{github.ref_name}}'
+          name: 'Draft Build: #${{github.ref_name}}'
           file: 'dist/pull-comments-other-pages.zip'
+          draft: true
