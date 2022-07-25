@@ -2,6 +2,8 @@ name: Build Plugin Release
 
 on:
   push:
+    branches:
+      - '**'
     tags:
       - 'v**'
     paths-ignore:
@@ -9,7 +11,7 @@ on:
       - '**.md'
   pull_request:
     branches:
-      - master
+      - 'master'
     paths-ignore:
       - 'LICENSE'
       - '**.md'
@@ -24,18 +26,14 @@ on:
           - 8.0
           - 7.4
           - 7.3
-          - 7.2
-          - 7.1
-          - 7.0
-          - 5.6
-      mysql_version:
-        description: 'MySQL version'
-        default: 5.7
+      wp_version:
+        description: 'WordPress version'
+        default: 6.0
         type: choice
         options:
-          - 5.5
-          - 5.6
-          - 5.7
+          - 6.0
+          - 5.9
+          - 5.8
 
 jobs:
   build:
