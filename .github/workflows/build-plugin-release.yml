@@ -18,11 +18,8 @@ on:
 
 jobs:
   build:
+    name: 'Build Release'
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        # I exclude PHP 8.0-8.1 because 'wp-coding-standards/wpcs' does not support them yet
-        php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4']
 
     steps:
       - name: Check out repository code
@@ -53,63 +50,47 @@ jobs:
         uses: php-actions/composer@v6
         with:
           progress: 'yes'
-          php_version: ${{ matrix.php }}
+          php_version: '7.3'
           command: update --optimize-autoloader
 
       - name: Composer Script - Lint PHP Files
         uses: php-actions/composer@v6
         with:
-          php_version: ${{ matrix.php }}
+          php_version: '7.3'
           command: run-script lint:php
 
       - name: Composer Script - Build Archive
         uses: php-actions/composer@v6
         with:
           progress: 'yes'
-          php_version: ${{ matrix.php }}
+          php_version: '7.3'
           command: run-script build:production
 
       - name: Upload build as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: plugin-build-php-${{ matrix.php }}
+          name: plugin-build-php7.3
           path: pull-comments-other-pages.zip
 
   e2e-tests:
+    name: 'E2E Testing'
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
       # https://github.com/cypress-io/github-action/issues/48
       fail-fast: false
       matrix:
-        php: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
-        wordpress: ['4.9', '5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7', '5.8', '5.9', '6.0']
+        php: ['7.3', '7.4', '8.0', '8.1']
+        wordpress: ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7', '5.8', '5.9', '6.0']
         exclude:
-          - wordpress: '4.9'
-            php: ['7.3', '7.4', '8.0', '8.1']
-          - wordpress: '5.0'
-            php: ['7.4', '8.0', '8.1']
-          - wordpress: '5.1'
-            php: ['5.6', '7.0', '7.4', '8.0', '8.1']
-          - wordpress: '5.2'
-            php: ['5.6', '7.0', '7.4', '8.0', '8.1']
-          - wordpress: '5.3'
-            php: ['5.6', '7.0', '8.0', '8.1']
-          - wordpress: '5.4'
-            php: ['5.6', '7.0', '7.1', '8.0', '8.1']
-          - wordpress: '5.5'
-            php: ['5.6', '7.0', '7.1', '8.0', '8.1']
-          - wordpress: '5.6'
-            php: ['5.6', '7.0', '7.1', '8.1']
-          - wordpress: '5.7'
-            php: ['5.6', '7.0', '7.1', '7.2', '8.1']
-          - wordpress: '5.8'
-            php: ['5.6', '7.0', '7.1', '7.2']
-          - wordpress: '5.9'
-            php: ['5.6', '7.0', '7.1', '7.2']
-          - wordpress: '6.0'
-            php: ['5.6', '7.0', '7.1', '7.2', '7.3']
-
+          - php: '7.3'
+            wordpress: ['6.0']
+          - php: '7.4'
+            wordpress: ['5.0', '5.1', '5.2']
+          - php: '8.0'
+            wordpress: ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5']
+          - php: '8.1'
+            wordpress: ['5.0', '5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7']
 
     services:
       mysql:
@@ -164,18 +145,10 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      - name: Download Build[PHP 5.6, 7.0 - 7.4]
-        if: ${{ matrix.php <= '7.4' }}
+      - name: Download Build
         uses: actions/download-artifact@v3
         with:
-          name: plugin-build-php-${{ matrix.php }}
-          path: dist
-
-      - name: Download Build[PHP 8.0 and above]
-        if: ${{ matrix.php >= '8.0' }}
-        uses: actions/download-artifact@v3
-        with:
-          name: plugin-build-php-7.4
+          name: plugin-build-php7.3
           path: dist
 
       - name: Cache Composer Dependencies
@@ -258,6 +231,7 @@ jobs:
           path: tests/cypress/videos
 
   publish:
+    name: 'Create GitHub Release'
     needs: [e2e-tests]
     runs-on: ubuntu-latest
 
@@ -265,7 +239,7 @@ jobs:
       - name: Download Build
         uses: actions/download-artifact@v3
         with:
-          name: plugin-build-php-7.4
+          name: plugin-build-php7.3
           path: dist
 
       - name: Upload Release
