@@ -35,10 +35,12 @@ Cypress.Commands.add('verifyCommentsNumber', (amount) => {
 	cy.url().should('include', '?page_id=');
 
 	// Default markup of 'Twenty Twenty' theme replace number 1 to word One
-	const prettyHeading = (1 === amount) ? 'One reply' : amount + ' replies';
+	const prettyHeading = new RegExp('(One|1|' + amount +'){1} repl(y|ies){1}');
 
 	// Based on markup of 'Twenty Twenty-Two' theme
-	cy.get('h2.comment-reply-title').should('be.visible').and('contain.text', prettyHeading);
+	cy.get('h2.comment-reply-title').should('be.visible').then((title) => {
+		cy.wrap(title).invoke('text').should('match', prettyHeading);
+	});
 	cy.get('div.comments-inner').should('be.visible').then((ol) => {
 		cy.wrap(ol.find('div.comment')).should('have.length', amount)
 	});
