@@ -2,7 +2,7 @@ describe('Merge Comments From Other Pages', () => {
 	it('Number of Comments Before Assigment', () => {
 		cy.visit('/');
 
-		cy.contains('ul.wp-block-page-list > li > a', 'Review page v2').should('be.visible').click();
+		cy.contains('ul.primary-menu > li > a', 'Review page v2').should('be.visible').click();
 		cy.verifyCommentsNumber(Cypress.env('wp_comments_number_on_dest_before_assigment'));
 	});
 
@@ -42,10 +42,10 @@ describe('Merge Comments From Other Pages', () => {
 	});
 
 	it('Number of Comments Unchanged on Source Pages', () => {
-		cy.contains('ul.wp-block-page-list > li > a', 'Old Review page').should('be.visible').click();
+		cy.contains('ul.primary-menu > li > a', 'Old Review page').should('be.visible').click();
 		cy.verifyCommentsNumber(Cypress.env('wp_comments_number_on_1st_source_page'));
 
-		cy.contains('ul.wp-block-page-list > li > a', 'Sample Page').should('be.visible').click();
+		cy.contains('ul.primary-menu > li > a', 'Sample Page').should('be.visible').click();
 		cy.verifyCommentsNumber(Cypress.env('wp_comments_number_on_2nd_source_page'));
 	});
 });

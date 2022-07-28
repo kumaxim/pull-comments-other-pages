@@ -91,7 +91,10 @@
             "wp @staging plugin activate pull-comments-other-pages wordpress-importer",
             "wp @staging post delete $(wp @staging post list --format=ids) --force",
             "wp @staging post delete $(wp @staging post list --post_type=page --format=ids) --force",
-            "wp @staging import wp-content/plugins/pull-comments-other-pages/tests/dummy.xml"
+            "wp @staging import wp-content/plugins/pull-comments-other-pages/tests/dummy.xml",
+            "wp @staging theme install twentytwenty --activate",
+            "wp @staging widget delete $(wp @staging widget list sidebar-1 --format=ids)",
+            "wp @staging post update $(wp @staging post list --post_type=page --format=ids) --comment_status=open"
         ],
         "build:production": [
             "@composer install --no-dev --prefer-dist --optimize-autoloader",

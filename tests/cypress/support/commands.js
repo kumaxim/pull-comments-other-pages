@@ -31,12 +31,12 @@ Cypress.Commands.add('adminLogin', (login, password) => {
 });
 
 Cypress.Commands.add('verifyCommentsNumber', (amount) => {
-	// Default markup of 'Twenty Twenty-Two' theme replace number 1 to word One
-	const prettyHeading = (1 === amount) ? 'One response' : amount + ' responses';
+	// Default markup of 'Twenty Twenty' theme replace number 1 to word One
+	const prettyHeading = (1 === amount) ? 'One reply' : amount + ' replies';
 
 	// Based on markup of 'Twenty Twenty-Two' theme
-	cy.get('h3#comments').should('be.visible').and('contain.text', prettyHeading);
-	cy.get('ol.commentlist').should('be.visible').then((ol) => {
-		cy.wrap(ol.find('li.comment')).should('have.length', amount)
+	cy.get('h2.comment-reply-title').should('be.visible').and('contain.text', prettyHeading);
+	cy.get('div.comments-inner').should('be.visible').then((ol) => {
+		cy.wrap(ol.find('div.comment')).should('have.length', amount)
 	});
 });
