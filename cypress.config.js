@@ -5,6 +5,7 @@ require('dotenv').config();
 
 module.exports = defineConfig({
 	projectId: process.env.CYPRESS_PROJECT_ID,
+	defaultCommandTimeout: 12000,
 	downloadsFolder: 'tests/cypress/downloads',
 	fixturesFolder: 'tests/cypress/fixtures',
 	screenshotsFolder: 'tests/cypress/screenshots',
