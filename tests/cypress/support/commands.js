@@ -31,6 +31,9 @@ Cypress.Commands.add('adminLogin', (login, password) => {
 });
 
 Cypress.Commands.add('verifyCommentsNumber', (amount) => {
+	// Pretty permalink are disabled in WordPress
+	cy.url().should('include', '?page_id=');
+
 	// Default markup of 'Twenty Twenty' theme replace number 1 to word One
 	const prettyHeading = (1 === amount) ? 'One reply' : amount + ' replies';
 

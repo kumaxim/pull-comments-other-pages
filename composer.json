@@ -29,7 +29,7 @@
         "php": ">=7.3"
     },
     "require-dev": {
-        "johnpbloch/wordpress": "^5.9",
+        "johnpbloch/wordpress": "^6.0",
         "wpackagist-plugin/fakerpress": "^0.5",
         "wp-cli/wp-cli-bundle": "^2.6",
         "wpackagist-plugin/wordpress-importer": "^0.7.0",
@@ -94,7 +94,8 @@
             "wp @staging import wp-content/plugins/pull-comments-other-pages/tests/dummy.xml",
             "wp @staging theme install twentytwenty --activate",
             "wp @staging widget delete $(wp @staging widget list sidebar-1 --format=ids)",
-            "wp @staging post update $(wp @staging post list --post_type=page --format=ids) --comment_status=open"
+            "wp @staging post update $(wp @staging post list --post_type=page --format=ids) --comment_status=open",
+            "wp @staging user meta update wpadmin show_admin_bar_front false"
         ],
         "build:production": [
             "@composer install --no-dev --prefer-dist --optimize-autoloader",

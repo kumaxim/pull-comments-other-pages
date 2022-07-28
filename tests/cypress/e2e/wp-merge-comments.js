@@ -22,7 +22,9 @@ describe('Merge Comments From Other Pages', () => {
 			}
 		});
 
-		cy.get('select#b2p-source-comments-page-dropdown + span.select2').should('be.visible').click()
+		cy.get('select#b2p-source-comments-page-dropdown + span.select2')
+			.scrollIntoView()
+			.should('be.visible').click()
 			.type('Sample Page{enter}Old Review page{enter}', { delay: 100 });
 
 		cy.get('.editor-post-publish-button').should('be.visible').click().then((button) => {
@@ -35,9 +37,6 @@ describe('Merge Comments From Other Pages', () => {
 	});
 
 	it('Number of Comments Increased on Destination Page', () => {
-		// Pretty permalink are disabled in WordPress
-		cy.url().should('include', '?page_id=');
-
 		cy.verifyCommentsNumber(Cypress.env('wp_comments_number_on_dest_after_assigment'));
 	});
 
