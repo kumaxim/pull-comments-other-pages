@@ -174,7 +174,6 @@ I have plan to implement following features in the next release:
     * The same as shortcode, but implemented as block for better UI
 - Get approve from WordPress Plugin Directory Team
 - Optimize GitHub Actions Workflow:
-    * Write Cypress tests to Dashboard only on push/pull_request in `master`
     * Publish release to WordPress Plugin Directory automatically
     
 I can't declare any deadline of the next release. Do them when I will be free. If you're want to contribute you may start from here. 
