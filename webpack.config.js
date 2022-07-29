@@ -24,7 +24,8 @@ module.exports = {
 	plugins: [
 		new CopyPlugin({
 			patterns: [
-				{ from: 'select2/dist', to: 'vendor/select2', context: 'node_modules' }
+				{ from: 'select2/dist', to: 'vendor/select2', context: 'node_modules' },
+				{ from: 'screenshot-*.png', context: 'resources' }
 			]
 		}),
 		new MiniCssExtractPlugin({
@@ -38,4 +39,7 @@ module.exports = {
 			formatter: 'verbose'
 		}),
 	],
+	stats: {
+		warnings: false
+	}
 };
