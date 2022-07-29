@@ -15,6 +15,13 @@ on:
       - '!.github/workflows/**.yml'
       - 'LICENSE'
       - '**.md'
+  workflow_dispatch:
+    inputs:
+      recorded:
+        description: 'Record tests in Cypress Dashboard'
+        required: true
+        type: boolean
+
 
 jobs:
   build:
@@ -217,7 +224,7 @@ jobs:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          record: ${{ github.ref == 'refs/heads/master' }}
+          record: ${{ github.ref == 'refs/heads/master' || inputs.recorded }}
           tag: wordpress-${{ matrix.wordpress }},php-${{ matrix.php }}
           install-command: yarn --frozen-lockfile --silent
           wait-on: 'http://localhost/'
