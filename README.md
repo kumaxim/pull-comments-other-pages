@@ -180,7 +180,7 @@ I can't declare any deadline of the next release. Do them when I will be free. I
 
 ## Credits
 
-[Виктор](https://t.me/leviktor) from Telegram chat [Митапы WordPress в Москве](https://t.me/wpmeetup) for the idea of this plugin
+[Виктор](https://t.me/leviktor) from Telegram chat [Митапы WordPress в Москве](https://t.me/wpmeetup) for the [idea](https://t.me/wpmeetup/12079) of this plugin
 
 [Kevin Brown](https://kevin-brown.com/) for [select2](https://github.com/select2/select2) library that I use for displaying dropdown in plugin's metabox
 
