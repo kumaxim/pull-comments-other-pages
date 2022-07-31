@@ -1,10 +1,10 @@
 === Pull Comments From Other Page(s) ===
 Contributors: kmaxim
 Tags: comments
-Requires at least: 5.4
-Tested up to: 5.4
-Stable tag: 1.0
 Requires PHP: 7.3
+Requires at least: 5.4
+Tested up to: 6.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
