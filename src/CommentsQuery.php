@@ -8,7 +8,7 @@ class CommentsQuery {
 	public function change_args( $comment_args ) {
 		global $post;
 
-		$additional_posts = get_post_meta( $post->ID, B2P_POST_META_KEY, true );
+		$additional_posts = get_post_meta( $post->ID, OptionsHolder::get_instance()->get( 'post_meta_key' ), true );
 
 		if ( ! empty( $additional_posts ) && is_array( $additional_posts ) ) {
 			unset( $comment_args['post_id'] );

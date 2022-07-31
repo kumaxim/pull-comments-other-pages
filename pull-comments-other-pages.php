@@ -29,14 +29,10 @@
 
 defined( 'ABSPATH' ) || die( 'Access restricted' );
 
-define( 'B2P_ASSETS_DIRECTORY_URI', plugin_dir_url( __FILE__ ) . 'assets/' );
-
-define( 'B2P_LANGUAGES_DIRECTORY_PATH', dirname( plugin_basename( __FILE__ ) ) . '/resources/languages' );
-
-define( 'B2P_POST_META_KEY', 'b2p_source_object_id' );
-
-function run_b2p_comments_555790ab17f466dc19563dcf9741509e35201d8f() {
+function pcop1_plugin_bootstrap() {
 	require_once __DIR__ . '/vendor/autoload.php';
+
+	KUMaxim\PullCommentsOtherPages\OptionsHolder::init( __FILE__ );
 
 	$metabox = new \KUMaxim\PullCommentsOtherPages\AdminMetaBox();
 	add_action( 'add_meta_boxes', array( $metabox, 'add_meta_box' ) );
@@ -51,4 +47,4 @@ function run_b2p_comments_555790ab17f466dc19563dcf9741509e35201d8f() {
 	add_action( 'plugin_loaded', array( $lang_loader, 'load_text_domain' ) );
 }
 
-run_b2p_comments_555790ab17f466dc19563dcf9741509e35201d8f();
+pcop1_plugin_bootstrap();

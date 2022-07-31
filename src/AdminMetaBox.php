@@ -14,7 +14,7 @@ class AdminMetaBox {
 	public function display( $wp_post, $args ) {
 		$post_types = isset( $args['args'] ) && is_array( $args['args'] ) ? array_shift( $args['args'] ) : array();
 
-		$current_sources = get_post_meta( $wp_post->ID, B2P_POST_META_KEY, true );
+		$current_sources = get_post_meta( $wp_post->ID, OptionsHolder::get_instance()->get( 'post_meta_key' ), true );
 		$current_sources = ! is_array( $current_sources ) ? array() : $current_sources;
 
 		$output = '';
@@ -73,7 +73,7 @@ class AdminMetaBox {
 		}
 
 		if ( ! array_key_exists( 'b2p-source-comments-page', $_POST ) || ! is_array( $_POST['b2p-source-comments-page'] ) ) {
-			delete_post_meta( $post_id, B2P_POST_META_KEY );
+			delete_post_meta( $post_id, OptionsHolder::get_instance()->get( 'post_meta_key' ) );
 
 			return;
 		}
@@ -81,12 +81,12 @@ class AdminMetaBox {
 		$page_ids = filter_var_array( $_POST['b2p-source-comments-page'], FILTER_VALIDATE_INT );
 
 		if ( 0 === count( $page_ids ) ) {
-			delete_post_meta( $post_id, B2P_POST_META_KEY );
+			delete_post_meta( $post_id, OptionsHolder::get_instance()->get( 'post_meta_key' ) );
 
 			return;
 		}
 
-		update_post_meta( $post_id, B2P_POST_META_KEY, $page_ids );
+		update_post_meta( $post_id, OptionsHolder::get_instance()->get( 'post_meta_key' ), $page_ids );
 
 	}
 
@@ -100,9 +100,9 @@ class AdminMetaBox {
 			return;
 		}
 
-		wp_enqueue_script( 'select2', B2P_ASSETS_DIRECTORY_URI . 'vendor/select2/js/select2.min.js', array( 'jquery' ), time(), true );
-		wp_enqueue_script( 'b2p-bundle', B2P_ASSETS_DIRECTORY_URI . 'bundle.js', array( 'select2' ), time(), true );
-		wp_enqueue_style( 'select2', B2P_ASSETS_DIRECTORY_URI . 'vendor/select2/css/select2.min.css', array(), time() );
-		wp_enqueue_style( 'b2p-bundle', B2P_ASSETS_DIRECTORY_URI . 'bundle.css', array( 'select2' ), time() );
+		wp_enqueue_script( 'select2', OptionsHolder::get_instance()->get( 'assets_uri' ) . 'vendor/select2/js/select2.min.js', array( 'jquery' ), time(), true );
+		wp_enqueue_script( 'b2p-bundle', OptionsHolder::get_instance()->get( 'assets_uri' ) . 'bundle.js', array( 'select2' ), time(), true );
+		wp_enqueue_style( 'select2', OptionsHolder::get_instance()->get( 'assets_uri' ) . 'vendor/select2/css/select2.min.css', array(), time() );
+		wp_enqueue_style( 'b2p-bundle', OptionsHolder::get_instance()->get( 'assets_uri' ) . 'bundle.css', array( 'select2' ), time() );
 	}
 }
