@@ -95,7 +95,7 @@ may still post comments on target page and their will be merged with comments of
 ## Support
 
 ### Free
-You may ask a question or post an issue on GitHub [Issues](https://github.com/kumaxim/pull-comnents-other-pages/issues). I check them daily and give response when I will be free. 
+You may ask a question or post an issue on GitHub [Issues](https://github.com/kumaxim/pull-comments-other-pages/issues). I check them daily and give response when I will be free. 
 
 ### Paid
 Any actions on your hosting or custom development under your requirements. Create new project on [UpWork](https://upwork.com/) and [send me][profile] an invitation. Cost and terms 
@@ -124,8 +124,8 @@ It will be pulled automatically during 1st start of Docker Sync._
 ### Install 
 
 Open a terminal and copy/past following commands 'as is':
-- `git clone git@github.com:kumaxim/pull-comnents-other-pages.git` - no comments
-- `cd pull-comnents-other-pages` - subsequent commands consider that plugin's dir is your current folder 
+- `git clone git@github.com:kumaxim/pull-comments-other-pages.git` - no comments
+- `cd pull-comments-other-pages` - subsequent commands consider that plugin's dir is your current folder 
 - `composer install update` - Download WordPress Core and plugins, install [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) and [WPCS](https://github.com/WordPress/WordPress-Coding-Standards) for linting, generate PSR4 class autoloader
 - `composer env:generate` - generate `.env` with variables that required in Docker Compose and subsequent commands
 - `compoer wp:create-config` - generate `wp-config.php`
@@ -166,7 +166,7 @@ _**Note:** You do not to do this if you want to send the pull request. The relea
 ## Roadmap
 
 I have plan to implement following features in the next release: 
-- Create shortcode `[pull-comnents-other-pages post_ids="1,2,3..."]`
+- Create shortcode `[pull-comments-other-pages post_ids="1,2,3..."]`
     * Shortcode must display comments of posts [1,2,3] in any place where it will be placed
 - Create widget
     * The same as shortcode, but implemented in widget for better UI
