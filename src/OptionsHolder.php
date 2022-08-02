@@ -14,7 +14,7 @@ class OptionsHolder {
 	private function __construct( $plugin_file ) {
 		$this->options = array(
 			'assets_uri'          => plugin_dir_url( $plugin_file ) . 'assets/',
-			'lang_directory_path' => dirname( plugin_basename( __FILE__ ) ) . '/resources/languages',
+			'lang_directory_path' => dirname( plugin_basename( __FILE__ ) ) . '/assets/languages',
 			'post_meta_key'       => 'pcop1_objects_id',
 		);
 	}

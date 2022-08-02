@@ -11,7 +11,7 @@
  * Author:            Maxim Kudryavtsev
  * Author URI:        https://k-maxim.ru
  * Text Domain:       pull-comments-other-pages
- * Domain Path:       resources/languages
+ * Domain Path:       assets/languages
  *
  * Pull Comments From Other Page(s) is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

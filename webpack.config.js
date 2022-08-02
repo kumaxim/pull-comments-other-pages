@@ -25,7 +25,8 @@ module.exports = {
 		new CopyPlugin({
 			patterns: [
 				{ from: 'select2/dist', to: 'vendor/select2', context: 'node_modules' },
-				{ from: 'screenshot-*.png', context: 'resources' }
+				{ from: 'screenshot-*.png', context: 'resources' },
+				{ from: 'languages', to: 'languages', context: 'resources' }
 			]
 		}),
 		new MiniCssExtractPlugin({
