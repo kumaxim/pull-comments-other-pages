@@ -42,5 +42,8 @@ On other side, your users may still post comments on target page and their will 
 
 == Changelog ==
 
-= 1.0 =
+= 1.0.1 =
+* Fix language's text domain PATH
+
+= 1.0.0 =
 * The 1st stable release of the plugin
