@@ -41,7 +41,7 @@ You may install the plugin on your WordPress until the configuration meet the mi
 2. Upload plugin in "WordPress => Admin Panel => Plugins => Add New => Upload Plugin"
 3. Press "Activate Plugin" button on successful screen
 
-## From [Plugin's Directory](https://wordpress.org/plugins/)
+## From [Plugin's Directory](https://wordpress.org/plugins/pull-comments-other-pages/)
 1. Open "WordPress => Admin Panel => Plugins => Add New"
 2. Search by plugin's slug surround by double quotes: "pull-comments-other-pages"
 
