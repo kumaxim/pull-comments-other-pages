@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name:       Pull Comments From Other Page(s)
- * Version:           1.0.0
+ * Version:           1.0.1
  * Plugin URI:        https://github.com/kumaxim/pull-comments-other-pages
  * Description:       Allow to display comments from one page to another.
  * Tested up to:      6.0
