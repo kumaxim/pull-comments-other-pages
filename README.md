@@ -42,29 +42,16 @@ You may install the plugin on your WordPress until the configuration meet the mi
 3. Press "Activate Plugin" button on successful screen
 
 ## From [Plugin's Directory](https://wordpress.org/plugins/)
+1. Open "WordPress => Admin Panel => Plugins => Add New"
+2. Search by plugin's slug surround by double quotes: "pull-comments-other-pages"
 
-_Note_: The plugin have not been approved in WordPress Plugin Directory yet. Only manual installation is available.
+![wp-admin-plugin-search](https://raw.githubusercontent.com/kumaxim/pull-comments-other-pages/master/.github/wordpress-plugin-search.png?raw=true)
+
+3. Press 'Install Now' button and then 'Activate'
 
 ## Using Composer on [Bedrock](https://roots.io/bedrock/)
-1. Add following lines to your `composer.json`
-    ```
-    {
-        "repositories":[
-            {
-                "type":"composer",
-                "url":"https://wpackagist.org"
-                "only": [
-                    "wpackagist-plugin/*",
-                    "wpackagist-theme/*"
-                ]
-            }
-        ],
-    }
-    ```
+Run in terminal `composer require wpackagist-plugin/pull-comments-other-pages`
 
-2. Install `composer require wpackagist-plugin/pull-comments-other-pages`
-
-_Note_: Not available yet, because the plugin not approved in Plugin's Directory
 
 ## Usages:
 
@@ -172,7 +159,6 @@ I have plan to implement following features in the next release:
     * The same as shortcode, but implemented in widget for better UI
 - Create Gutenberg block
     * The same as shortcode, but implemented as block for better UI
-- Get approve from WordPress Plugin Directory Team
 - Optimize GitHub Actions Workflow:
     * Publish release to WordPress Plugin Directory automatically
     
